@@ -62,9 +62,9 @@ class VirtualMemory(object):
     u""" Virtualios mašinos atmintis. (Abstrakti klasė.)
     """
 
-    PLR = None                          # TODO: Nuoroda į procesoriaus 
+    PLR = None                          # TODO: Nuoroda į procesoriaus
                                         # registrą.
-    PLBR = None                         # TODO: Nuoroda į procesoriaus 
+    PLBR = None                         # TODO: Nuoroda į procesoriaus
                                         # registrą.
-    RAM = None                          # TODO: Nuoroda į realios mašinos 
+    RAM = None                          # TODO: Nuoroda į realios mašinos
                                         # atmintį.

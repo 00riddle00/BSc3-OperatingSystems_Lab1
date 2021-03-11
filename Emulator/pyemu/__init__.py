@@ -12,4 +12,4 @@ def main(argv=None):
         argv = sys.argv[:]
 
     for arg in argv:
-        print arg
+        print(arg)

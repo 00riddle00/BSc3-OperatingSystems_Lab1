@@ -14,7 +14,7 @@ def to_unicode(string):
     u""" Jei argumentas nėra unikodo eilutė, tai tada bandoma į ją
     konvertuoti. Daroma prielaida, kad koduotė yra **utf-8**.
     """
-    if isinstance(string, unicode):
+    if isinstance(string, str):
         return string
     else:
         return string.decode('utf-8')
@@ -24,7 +24,7 @@ def to_bytes(string):
     u""" Jei argumentas yra unikodo eilutė, tai tada bandoma ją konvertuoti
     į baitų eilutę. Naudojama koduotė yra **utf-8**.
     """
-    if isinstance(string, unicode):
+    if isinstance(string, str):
         return string.encode('utf-8')
     else:
         return str(string)
@@ -103,7 +103,7 @@ class IntegerRegister(Register):
         self.value = 0
 
     def set_value(self, value):
-        u""" Patikrina ar reikšmė yra sveikas skaičius ir ar ji telpa. Tada 
+        u""" Patikrina ar reikšmė yra sveikas skaičius ir ar ji telpa. Tada
         ją priskiria. Klaidos atveju išmeta ``ValueError``.
         """
 
