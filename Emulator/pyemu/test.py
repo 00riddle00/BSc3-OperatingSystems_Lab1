@@ -6,7 +6,7 @@
 
 import unittest
 from registers import Cell, Register, IntegerRegister, HexRegister
-from pyemu.registers import ChoiceRegister, StatusFlagRegister
+from registers import ChoiceRegister, StatusFlagRegister
 
 class Registers(unittest.TestCase):
     """ Testai atminties ląstelėms ir registrams.
@@ -205,10 +205,10 @@ class Registers(unittest.TestCase):
         assert cr.value == '1'
         try:
             cr.value = 3
-        except ValueError, e:
-            assert unicode(e) == u'Nežinomas pasirinkimas.'
+        except ValueError as e:
+            assert str(e) == 'Nežinomas pasirinkimas.'
         else:
-            self.fail(u'turėjo būti išmesta išimtis.'.encode('utf-8'))
+            self.fail('turėjo būti išmesta išimtis.')
 
         cr = ChoiceRegister(['a', 'bb', 'c'])
         assert cr.size == 2
@@ -229,19 +229,19 @@ class Registers(unittest.TestCase):
         assert sf.OF == False
         try:
             sf.NF
-        except AttributeError, e:
-            assert str(e).decode('utf-8') == u'Nežinomas požymis.'
+        except AttributeError as e:
+            assert str(e) == 'Nežinomas požymis.'
         else:
-            self.fail(u'turėjo būti išmesta išimtis.'.encode('utf-8'))
+            self.fail('turėjo būti išmesta išimtis.')
 
         sf.CF = 1
         assert sf.CF == True
         try:
             sf.NF = 1
-        except AttributeError, e:
-            assert str(e).decode('utf-8') == u'Nežinomas požymis.'
+        except AttributeError as e:
+            assert str(e) == 'Nežinomas požymis.'
         else:
-            self.fail(u'turėjo būti išmesta išimtis.'.encode('utf-8'))
+            self.fail('turėjo būti išmesta išimtis.')
 
 if __name__ == '__main__':
     unittest.main()

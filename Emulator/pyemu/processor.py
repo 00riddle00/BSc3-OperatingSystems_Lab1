@@ -5,7 +5,7 @@ from pyemu.registers import Register, IntegerRegister, HexRegister
 from pyemu.registers import ChoiceRegister, StatusFlagRegister
 
 class Processor(object):
-    u""" Realios mašinos procesorius.
+    """ Realios mašinos procesorius.
     """
 
     IC = HexRegister(3)                 # Nurodo vykdomos komandos adresą
@@ -31,7 +31,7 @@ class Processor(object):
 
     def __init__(self, real_memory,
             virtual_memory_code=None, virtual_memory_data=None):
-        u""" Inicializuoja procesorių.
+        """ Inicializuoja procesorių.
 
         + ``real_memory`` – realios mašinos atmintis.
         + ``virtual_memory_code`` – virtualios mašinos atmintis, kodo
@@ -44,7 +44,7 @@ class Processor(object):
         self.virtual_memory = virtual_memory
 
     def set_virtual_memory(self, virtual_memory):
-        u""" Nurodo naudoti ``virtual_memory``, kaip virtualios atminties
+        """ Nurodo naudoti ``virtual_memory``, kaip virtualios atminties
         objektą.
         """
 
@@ -57,7 +57,7 @@ class Processor(object):
         """
         raise Exception('Not implemented!')
 
-    def continue(self):
+    def _continue(self):
         """ Vykdo tol kol vykdosi.
         """
 
