@@ -1,14 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-
 """ Modulis, kuriame realizuotos klasės registrų ir atminties ląstelių
 emuliacijai.
 """
 
-
 WORD_SIZE = 8                           # Žodžio dydis yra 8 baitai.
-
 
 class Cell(object):
     """ Atminties ląstelė. Turi dydį išreikštą simboliais.
@@ -51,7 +48,6 @@ class Cell(object):
 
     value = property(get_value, set_value)
 
-
 class Register(Cell):
     """ Bendro pobūdžio registras.
     """
@@ -68,7 +64,6 @@ class Register(Cell):
 
         self.value = value
         return self
-
 
 class IntegerRegister(Register):
     """ Registras skirtas sveikiesiems skaičiams su ženklu saugoti.
@@ -122,7 +117,6 @@ class IntegerRegister(Register):
         return int(self)
 
     value = property(Register.get_value, set_value)
-
 
 class HexRegister(Register):
     """ Registras skirtas sveikiems neneigiamiems šešioliktainiams

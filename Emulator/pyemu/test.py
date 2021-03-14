@@ -1,14 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-
 """ Testai.
 """
 
-
 import unittest
 from registers import Cell, Register, IntegerRegister, HexRegister
-
 
 class Registers(unittest.TestCase):
     """ Testai atminties ląstelėms ir registrams.

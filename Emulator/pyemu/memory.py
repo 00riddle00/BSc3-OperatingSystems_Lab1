@@ -1,18 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-
 """ Modulis, kuriame realizuotos klasės mašinos atminties emuliacijos
 realizacijai.
 """
 
 from pyemu.registers import Cell
 
-
 BLOCKS = 256
 BLOCK_SIZE = 16
 PAGER_SIZE = 16
-
 
 class RealMemory(object):
     """ Realios mašinos atmintis.
@@ -56,7 +53,6 @@ class RealMemory(object):
         """
 
         self._get_cell(address).value = value
-
 
 class VirtualMemory(object):
     """ Virtualios mašinos atmintis. (Abstrakti klasė.)

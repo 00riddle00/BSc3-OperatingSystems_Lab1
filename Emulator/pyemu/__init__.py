@@ -3,7 +3,6 @@
 
 import sys
 
-
 def main(argv=None):
     """
     """
