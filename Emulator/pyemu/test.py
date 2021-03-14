@@ -214,3 +214,6 @@ class Registers(unittest.TestCase):
         a.reg2B = -1
         assert a.reg4B + a.reg2B == 0
         assert a.reg4B - a.reg2B == 2
+
+if __name__ == '__main__':
+    unittest.main()

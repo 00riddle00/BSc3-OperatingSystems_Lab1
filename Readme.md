@@ -14,5 +14,15 @@ source env/bin/activate
 ./env/bin/python3 -m pip install -r requirements.txt
 ```
 
-### Run tests for (...)
+### Run tests
+* first, go into the directory where test.py is located
+`cd OS/Emulator/pyemu/`
 
+* then run tests using one of the commands below
+```
+python test.py
+python -v test.py     # (verbose)
+python -m unittest test.py
+python -m unittest test.Utils
+python -m unittest test.Utils.test_unicode_str
+```
