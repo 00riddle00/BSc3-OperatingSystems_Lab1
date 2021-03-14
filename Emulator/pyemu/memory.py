@@ -5,7 +5,7 @@
 realizacijai.
 """
 
-from pyemu.registers import Cell
+from registers import Cell
 
 BLOCKS = 256
 BLOCK_SIZE = 16

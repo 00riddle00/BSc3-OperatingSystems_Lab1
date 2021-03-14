@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from pyemu.registers import Register, IntegerRegister, HexRegister
-from pyemu.registers import ChoiceRegister, StatusFlagRegister
+from registers import Register, IntegerRegister, HexRegister
+from registers import ChoiceRegister, StatusFlagRegister
 
 class Processor(object):
     """ Realios mašinos procesorius.
