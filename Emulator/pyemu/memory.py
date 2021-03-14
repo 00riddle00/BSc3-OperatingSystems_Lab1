@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-u""" Modulis, kuriame realizuotos klasės mašinos atminties emuliacijos
+""" Modulis, kuriame realizuotos klasės mašinos atminties emuliacijos
 realizacijai.
 """
 
@@ -15,11 +15,11 @@ PAGER_SIZE = 16
 
 
 class RealMemory(object):
-    u""" Realios mašinos atmintis.
+    """ Realios mašinos atmintis.
     """
 
     def __init__(self):
-        u""" Inicializuoja tuščią atmintį.
+        """ Inicializuoja tuščią atmintį.
         """
 
         self._cells = []
@@ -30,7 +30,7 @@ class RealMemory(object):
             self._cells.append(block)
 
     def _get_cell(self, address):
-        u""" Grąžina atminties ląstelę, kuri yra nurodyta adresu.
+        """ Grąžina atminties ląstelę, kuri yra nurodyta adresu.
         Jei ``address`` yra ``tuple`` tipo objektas, tai laikoma, kad
         pirmas elementas ir bloko adresas, o ląstelės bloke. Jei
         ``address`` yra ``int`` tipo objektas, tai bloko adresas
@@ -46,20 +46,20 @@ class RealMemory(object):
         return self._cells[block][cell]
 
     def __getitem__(self, address):
-        u""" Grąžina adresu nurodytos ląstelės reikšmę.
+        """ Grąžina adresu nurodytos ląstelės reikšmę.
         """
 
         return self._get_cell(address).value
 
     def __setitem__(self, address, value):
-        u""" Priskiria adresu nurodytai ląstelei nurodytą reikšmę.
+        """ Priskiria adresu nurodytai ląstelei nurodytą reikšmę.
         """
 
         self._get_cell(address).value = value
 
 
 class VirtualMemory(object):
-    u""" Virtualios mašinos atmintis. (Abstrakti klasė.)
+    """ Virtualios mašinos atmintis. (Abstrakti klasė.)
     """
 
     PLR = None                          # TODO: Nuoroda į procesoriaus
