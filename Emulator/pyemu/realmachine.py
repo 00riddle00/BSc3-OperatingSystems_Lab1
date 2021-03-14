@@ -1,20 +1,18 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-
 from math import ceil
 
-from pyemu.processor import Processor
-from pyemu.memory import RealMemory
-from pyemu.memory import BLOCK_SIZE
-
+from processor import Processor
+from memory import RealMemory
+from memory import BLOCK_SIZE
 
 class RealMachine(object):
-    u""" Realią mašiną simuliuojantis objektas.
+    """ Realią mašiną simuliuojantis objektas.
     """
 
     def __init__(self):
-        u""" Inicializuoja mašinos objektą.
+        """ Inicializuoja mašinos objektą.
         """
 
         self.real_memory = RealMemory()
@@ -22,7 +20,7 @@ class RealMachine(object):
         self.virtual_memory = None
 
     def load_virtual_machine(self, file):
-        u""" Pakrauna virtualią mašiną.
+        """ Pakrauna virtualią mašiną.
         """
 
         code = []

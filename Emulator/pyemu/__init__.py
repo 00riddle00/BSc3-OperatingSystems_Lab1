@@ -3,8 +3,7 @@
 
 import sys
 
-from pyemu.realmachine import RealMachine
-
+from realmachine import RealMachine
 
 def main(argv=None):
     """
@@ -14,7 +13,7 @@ def main(argv=None):
         argv = sys.argv[:]
 
     if len(argv) != 2:
-        print u'Naudojimas: pyemu <failas>'
+        print('Naudojimas: pyemu <failas>')
         sys.exit(1)
     else:
         file = argv[1]

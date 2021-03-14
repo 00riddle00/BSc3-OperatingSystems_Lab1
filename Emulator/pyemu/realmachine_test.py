@@ -1,27 +1,25 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-
-u""" Testai.
+""" Testai.
 """
-
 
 import unittest
 
-from pyemu.realmachine import RealMachine
-from pyemu.memory import RealMemory
-from pyemu.processor import Processor
+from realmachine import RealMachine
+from memory import RealMemory
+from processor import Processor
 
 class RealMachineTest(unittest.TestCase):
-    u""" Testai pagalbinėms funkcijoms.
+    """ Testai pagalbinėms funkcijoms.
     """
 
     def test_init_memory(self):
 
         r_mem = RealMemory()
         assert r_mem[356] == '00000000'
-        r_mem[12, 11] = u'ačiū'
-        assert r_mem[203] == '  a\xc4\x8di\xc5\xab'
+        r_mem[12, 11] = 'ačiū'
+        assert r_mem[203] == '    ačiū'
                                         # 12 * 16 + 11 == 203
 
     def test_init_processor(self):
@@ -33,4 +31,5 @@ class RealMachineTest(unittest.TestCase):
 
         rm = RealMachine()
 
-
+if __name__ == '__main__':
+    unittest.main()

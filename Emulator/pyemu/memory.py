@@ -36,7 +36,7 @@ class RealMemory(object):
         """
 
         if isinstance(address, int):
-            block = address / BLOCK_SIZE
+            block = address // BLOCK_SIZE
             cell = address % BLOCK_SIZE
         else:
             block, cell = address
