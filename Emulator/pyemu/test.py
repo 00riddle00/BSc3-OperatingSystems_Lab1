@@ -35,18 +35,16 @@ class Registers(unittest.TestCase):
 
         cell2B = Cell(2)
         assert cell2B.value == '00'
-        assert str(cell2B) == '00'
-
         cell2B.value = 0
         assert cell2B.value == ' 0'
         cell2B.value = 13
         assert cell2B.value == '13'
-        # cell2B.value = 'ab'
-        # assert cell2B.value == 'ab'
-        # cell2B.value = 'b'
-        # assert cell2B.value == ' b'
-        # cell2B.value = u'š'
-        # assert cell2B.value == '\xc5\xa1'
+        cell2B.value = 'ab'
+        assert cell2B.value == 'ab'
+        cell2B.value = 'b'
+        assert cell2B.value == ' b'
+        cell2B.value = 'š'
+        assert cell2B.value == ' š'
         try:
             cell2B.value = 123
         except ValueError as e:
@@ -67,12 +65,12 @@ class Registers(unittest.TestCase):
         assert a.reg2B == ' 0'
         a.reg2B = 13
         assert a.reg2B == '13'
-        # a.reg2B = 'ab'
-        # assert a.reg2B == 'ab'
-        # a.reg2B = 'b'
-        # assert a.reg2B == ' b'
-        # a.reg2B = u'š'
-        # assert a.reg2B == '\xc5\xa1'
+        a.reg2B = 'ab'
+        assert a.reg2B == 'ab'
+        a.reg2B = 'b'
+        assert a.reg2B == ' b'
+        a.reg2B = 'š'
+        assert a.reg2B == ' š'
         try:
             a.reg2B = 123
         except ValueError as e:

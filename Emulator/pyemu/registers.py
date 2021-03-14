@@ -39,9 +39,8 @@ class Cell(object):
         """
 
         self.size = size
-        self._format = '{{0:>{0}}}'.format(self.size)
+        self._format = '{{: >{0}}}'.format(self.size)
         self._value = '0'*self.size
-
 
     def set_value(self, value):
         u""" Patikrina ar reikšmė telpa atminties ląstelėje ir jei taip,
@@ -50,9 +49,10 @@ class Cell(object):
         # TODO: Pridėti pranešimo išsiuntimą, jog reikšmė pasikeitė.
         # Tam, kad būtų paprasčiau parašyti grafinę sąsają.
 
-        value = to_bytes(value)
+        value = str(value)
         if len(value) <= self.size:
             self._value = self._format.format(value)
+
         else:
             raise ValueError(u'Reikšmė netelpa ląstelėje.')
         return self
