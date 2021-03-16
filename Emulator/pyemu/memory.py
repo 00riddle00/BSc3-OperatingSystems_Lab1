@@ -277,9 +277,9 @@ class RealMemory(object):
                 label = command.split(u'«', 1)[1].split(u'»', 1)[0]
                 command = command.replace(
                         u'«{0}»'.format(label),
-                        int_to_hex(labels[label], 3)).encode('utf-8')
+                        int_to_hex(labels[label], 3))
             else:
-                command = command.encode('utf-8')
+                command = command
             command += ' ' * (WORD_SIZE - len(command))
             vmcode[i] = command
 
