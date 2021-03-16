@@ -3,7 +3,7 @@
 
 import sys
 
-from realmachine import RealMachine
+from pyemu.realmachine import RealMachine
 
 # import wx
 

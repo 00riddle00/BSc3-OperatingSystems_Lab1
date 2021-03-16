@@ -3,9 +3,9 @@
 
 from math import ceil
 
-from processor import Processor
-from memory import RealMemory
-from memory import BLOCK_SIZE
+from pyemu.processor import Processor
+from pyemu.memory import RealMemory
+from pyemu.memory import BLOCK_SIZE
 
 class RealMachine(object):
     """ Realią mašiną simuliuojantis objektas.

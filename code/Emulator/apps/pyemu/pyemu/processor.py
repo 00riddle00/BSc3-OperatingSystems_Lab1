@@ -3,10 +3,9 @@
 
 import inspect
 
-from registers import Register, IntegerRegister, HexRegister
-from registers import ChoiceRegister, StatusFlagRegister
-
-from registers import hex_to_int
+from pyemu.registers import Register, IntegerRegister, HexRegister
+from pyemu.registers import ChoiceRegister, StatusFlagRegister
+from pyemu.registers import hex_to_int
 
 class Commands(object):
     """ Objektas representuojantis komandų sistemą.
