@@ -259,5 +259,18 @@ class Registers(unittest.TestCase):
         else:
             self.fail('turėjo būti išmesta išimtis.')
 
+        class A(object):
+            sf = StatusFlagRegister()
+
+        a = A()
+        a.sf.CF = 1
+        a.sf.ZF = 1
+        a.sf.SF = 1
+        a.sf.OF = 1
+        assert a.sf.CF == 1
+        assert a.sf.ZF == 1
+        assert a.sf.SF == 1
+        assert a.sf.OF == 1
+
 if __name__ == '__main__':
     unittest.main()

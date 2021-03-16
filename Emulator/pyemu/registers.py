@@ -233,8 +233,11 @@ class ChoiceRegister(Register):
 
     value = property(Register.get_value, set_value)
 
-class StatusFlagRegister(Register):
+class StatusFlagRegister(object):
     """ Dviejų baitų loginis registras.
+
+    Šis registras nėra standartinis, jam negalima priskirti reikšmės.
+
     """
 
     def __init__(self):
@@ -266,6 +269,3 @@ class StatusFlagRegister(Register):
             self._bytes[flag] = True if value else False
         else:
             raise AttributeError('Nežinomas požymis.')
-
-    value = None                        # Šis registras nėra tipinis – jam
-                                        # negalima priskirti reikšmės.
