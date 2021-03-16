@@ -282,10 +282,10 @@ class RealMemory(object):
             clean_code.append(command.strip())
 
         for i, command in enumerate(clean_code):
-            if u'«' in command:
-                label = command.split(u'«', 1)[1].split(u'»', 1)[0]
+            if '«' in command:
+                label = command.split('«', 1)[1].split('»', 1)[0]
                 command = command.replace(
-                        u'«{0}»'.format(label),
+                        '«{0}»'.format(label),
                         int_to_hex(labels[label], 3))
             else:
                 command = command

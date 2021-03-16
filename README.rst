@@ -1,4 +1,3 @@
-
 ## Informatikos kurso Operacinių sistemų laboratorinis darbas.
 
 Autoriai:

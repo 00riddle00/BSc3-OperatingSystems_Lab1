@@ -1,2 +1,14 @@
+env/
+*.pdf
+*.aux
+*.log
+*.out
 *.pyc
-tmp.*
+.installed.cfg
+.mr.developer.cfg
+*.egg-info
+code/Emulator/bin
+develop-eggs
+code/Emulator/parts
+code/Emulator/.coverage
+code/Emulator/var
