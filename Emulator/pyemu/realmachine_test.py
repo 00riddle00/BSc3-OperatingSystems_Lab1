@@ -4,6 +4,7 @@
 """ Testai.
 """
 
+import os
 import unittest
 
 from realmachine import RealMachine
@@ -15,14 +16,16 @@ class RealMachineTest(unittest.TestCase):
     """ Testai pagalbinėms funkcijoms.
     """
 
-    #def test_init_processor(self):
+    def test_init_processor(self):
 
-        #r_mem = RealMemory()
-        #processor = Processor(r_mem)
+        r_mem = RealMemory()
+        processor = Processor(r_mem)
 
-    #def test_init_real_machine(self):
+    def test_init_real_machine(self):
 
-        #rm = RealMachine()
+        rm = RealMachine()
+        tests_dir = os.path.abspath(os.path.dirname(__file__))
+        rm.load_virtual_machine(os.path.join(tests_dir, 'test_program_1'))
 
 class RealMemoryTest(unittest.TestCase):
     """ Testai atminties funkcijoms.
@@ -147,7 +150,7 @@ class RealMemoryTest(unittest.TestCase):
                 'namo:LR1 00a',
                 'LR2 00a\n',
                 'CMP    ',
-                'JE «namo»  \n',
+                'JE «namo» \n',
                 ]
         data = [
                 '[a]:labas\n\n\n\n',
