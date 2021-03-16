@@ -3,9 +3,9 @@
 
 import sys
 
-from pyemu.realmachine import RealMachine
+from realmachine import RealMachine
 
-import wx
+# import wx
 
 def main(argv=None):
     """
@@ -21,16 +21,17 @@ def main(argv=None):
         gui = True
         file = argv[2]
     else:
-        print u'Naudojimas: pyemu <failas>'
+        print('Naudojimas: pyemu <failas>')
         sys.exit(1)
 
     rm = RealMachine()
 
     if gui:
-        app = wx.App()
-        frame = wx.Frame(None, -1, 'Bla')
-        frame.Show()
-        app.MainLoop()
+        # app = wx.App()
+        # frame = wx.Frame(None, -1, 'Bla')
+        # frame.Show()
+        # app.MainLoop()
+        pass
     else:
         rm.load_virtual_machine(file)
         rm.processor.execute()
