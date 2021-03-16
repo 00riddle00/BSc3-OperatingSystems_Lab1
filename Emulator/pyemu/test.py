@@ -5,12 +5,12 @@
 """
 
 import unittest
-from pyemu.registers import int_to_hex, hex_to_int
+from registers import int_to_hex, hex_to_int
 from registers import Cell, Register, IntegerRegister, HexRegister
 from registers import ChoiceRegister, StatusFlagRegister
 
 class Utils(unittest.TestCase):
-    u""" Testai pagalbinėms funkcijoms.
+    """ Testai pagalbinėms funkcijoms.
     """
     def test_hex_int(self):
 

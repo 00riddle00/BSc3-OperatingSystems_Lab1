@@ -1,18 +1,18 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-u""" Testai.
+""" Testai.
 """
 
 import unittest
 
-from pyemu.realmachine import RealMachine
-from pyemu.memory import RealMemory, Pager
-from pyemu.memory import VirtualMemoryCode, VirtualMemoryData
-from pyemu.processor import Processor
+from realmachine import RealMachine
+from memory import RealMemory, Pager
+from memory import VirtualMemoryCode, VirtualMemoryData
+from processor import Processor
 
 class RealMachineTest(unittest.TestCase):
-    u""" Testai pagalbinėms funkcijoms.
+    """ Testai pagalbinėms funkcijoms.
     """
 
     #def test_init_processor(self):
@@ -25,7 +25,7 @@ class RealMachineTest(unittest.TestCase):
         #rm = RealMachine()
 
 class RealMemoryTest(unittest.TestCase):
-    u""" Testai atminties funkcijoms.
+    """ Testai atminties funkcijoms.
     """
 
     def test_init_memory(self):
@@ -51,8 +51,8 @@ class RealMemoryTest(unittest.TestCase):
         r_mem = RealMemory()
 
         assert r_mem[356] == '00000000'
-        r_mem[12, 11] = u'ačiū'
-        assert r_mem[203] == '  a\xc4\x8di\xc5\xab'
+        r_mem[12, 11] = 'ačiū'
+        assert r_mem[203] == '    ačiū'
                                         # 12 * 16 + 11 == 203
 
         word = '01234567'
@@ -61,10 +61,10 @@ class RealMemoryTest(unittest.TestCase):
         r_mem.put_data((1, 15), word)
         try:
             r_mem.put_data((1, 16), word)
-        except ValueError, e:
-            assert unicode(e) == u'Duomenys netelpa į bloką.'
+        except ValueError as e:
+            assert str(e) == 'Duomenys netelpa į bloką.'
         else:
-            self.fail(u'Turėjo būti išmesta išimtis.'.encode('utf-8'))
+            self.fail('Turėjo būti išmesta išimtis.')
 
         assert r_mem.get_data((0, 0), 8 * 16) == word * 16
         assert r_mem.get_data((1, 0), 8 * 6) == word * 5 + 'aaa     '
@@ -81,18 +81,16 @@ class RealMemoryTest(unittest.TestCase):
 
         try:
             pager = Pager(r_mem, C=0, D=1)
-        except ValueError, e:
-            assert unicode(e) == \
-                    u'Kodo segmento dydis turi būti didesnis už 1.'
+        except ValueError as e:
+            assert str(e) == 'Kodo segmento dydis turi būti didesnis už 1.'
         else:
-            self.fail(u'Turėjo būti išmesta išimtis.'.encode('utf-8'))
+            self.fail('Turėjo būti išmesta išimtis.')
         try:
             pager = Pager(r_mem, C=1, D=-1)
-        except ValueError, e:
-            assert unicode(e) == \
-                    u'Duomenų segmento dydis turi būti teigiamas.'
+        except ValueError as e:
+            assert str(e) == 'Duomenų segmento dydis turi būti teigiamas.'
         else:
-            self.fail(u'Turėjo būti išmesta išimtis.'.encode('utf-8'))
+            self.fail('Turėjo būti išmesta išimtis.')
 
         pager = Pager(r_mem, C=1, D=1)
 
@@ -113,18 +111,16 @@ class RealMemoryTest(unittest.TestCase):
         assert pager.get_data_cell_address((0, 5)) == (17, 5)
         try:
             pager.get_code_cell_address((1, 4))
-        except ValueError, e:
-            assert unicode(e) == \
-                    u'Virtualus adresas nepriklauso kodo segmentui.'
+        except ValueError as e:
+            assert str(e) == 'Virtualus adresas nepriklauso kodo segmentui.'
         else:
-            self.fail(u'Turėjo būti išmesta išimtis.'.encode('utf-8'))
+            self.fail('Turėjo būti išmesta išimtis.')
         try:
             pager.get_data_cell_address((1, 4))
-        except ValueError, e:
-            assert unicode(e) == \
-                    u'Virtualus adresas nepriklauso duomenų segmentui.'
+        except ValueError as e:
+            assert str(e) == 'Virtualus adresas nepriklauso duomenų segmentui.'
         else:
-            self.fail(u'Turėjo būti išmesta išimtis.'.encode('utf-8'))
+            self.fail('Turėjo būti išmesta išimtis.')
 
     def test_virtual_memory(self):
 
@@ -142,3 +138,6 @@ class RealMemoryTest(unittest.TestCase):
         assert vmdata[0, 4] == '01234567'
         vmdata[0, 5] = 'abababab'
         assert r_mem[17, 5] == 'abababab'
+
+if __name__ == '__main__':
+    unittest.main()

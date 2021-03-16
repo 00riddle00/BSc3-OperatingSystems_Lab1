@@ -8,7 +8,7 @@ emuliacijai.
 WORD_SIZE = 8                           # Žodžio dydis yra 8 baitai.
 
 def int_to_hex(number, size=None):
-    u""" Konvertuoja sveikąjį teigiamą skaičių ``number`` į simbolių eilutę
+    """ Konvertuoja sveikąjį teigiamą skaičių ``number`` į simbolių eilutę
     išreiškiančią šešioliktainį sveiką teigiamą skaičių.
     Jei ``size`` yra ne None, tai pasirūpina, kad simbolių eilutė būtų
     ne trumpesnė nei ``size``.
@@ -21,7 +21,7 @@ def int_to_hex(number, size=None):
         return '{{0:0>{0}}}'.format(size).format(string)
 
 def hex_to_int(number):
-    u""" Konvertuoja simbolių eilutę išreiškiančią šešioliktainį sveiką
+    """ Konvertuoja simbolių eilutę išreiškiančią šešioliktainį sveiką
     teigiamą skaičių į ``int``.
     """
 

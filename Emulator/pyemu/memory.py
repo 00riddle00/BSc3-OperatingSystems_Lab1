@@ -9,8 +9,8 @@ import re
 
 from math import ceil, floor
 
-from pyemu.registers import WORD_SIZE
-from pyemu.registers import int_to_hex, hex_to_int
+from registers import WORD_SIZE
+from registers import int_to_hex, hex_to_int
 from registers import Cell
 
 BLOCKS = 256
@@ -18,7 +18,7 @@ BLOCK_SIZE = 16
 PAGER_SIZE = 16
 
 def ih(number):
-    u""" Gautąjį ``number`` konvertuoja į šešioliktainį skaičių
+    """ Gautąjį ``number`` konvertuoja į šešioliktainį skaičių
     dviejuose baituose.
     """
     string = int_to_hex(number, 2)
@@ -26,11 +26,11 @@ def ih(number):
     return string
 
 class Pager(object):
-    u""" Pagalbinis objektas tvarkymuisi su puslapiavimo mechanizmu.
+    """ Pagalbinis objektas tvarkymuisi su puslapiavimo mechanizmu.
     """
 
     def __init__(self, memory, address=None, C=None, D=None):
-        u""" Jei ``address`` nėra None, tai puslapiavimo mechanizmą nuskaito
+        """ Jei ``address`` nėra None, tai puslapiavimo mechanizmą nuskaito
         iš atminties. Kitu atveju jį sukuria pagal gautuosius ``C`` ir
         ``D``.
         + ``memory`` – realios mašinos atmintis.
@@ -50,7 +50,7 @@ class Pager(object):
             self.create(C, D)
 
     def create(self, C, D):
-        u""" Sukuria virtualios mašinos puslapiavimo lentelę. Nustato
+        """ Sukuria virtualios mašinos puslapiavimo lentelę. Nustato
         PLR ir PLBR.
         """
 
@@ -59,13 +59,11 @@ class Pager(object):
 
         data = []
         if C < 1:
-            raise ValueError(
-                    u'Kodo segmento dydis turi būti didesnis už 1.')
+            raise ValueError('Kodo segmento dydis turi būti didesnis už 1.')
         else:
             data.append(ih(C))
         if D < 0:
-            raise ValueError(
-                    u'Duomenų segmento dydis turi būti teigiamas.')
+            raise ValueError('Duomenų segmento dydis turi būti teigiamas.')
         else:
             data.append(ih(D))
         for i in range(PAGER_SIZE, PAGER_SIZE + C):
@@ -78,18 +76,18 @@ class Pager(object):
                 self.PLR * BLOCK_SIZE + self.PLR, ''.join(data))
 
     def read(self, address):
-        u""" Nuskaito iš atminties virtualios mašinos puslapiavimo lentelę.
+        """ Nuskaito iš atminties virtualios mašinos puslapiavimo lentelę.
         """
         self.PLR, self.PLBR = self.memory.get_address_tuple(address)
 
     def get_byte(self, offset):
-        u""" Gražina puslapiavimo lentelės baitą, pasislinkusį nuo pradžios
+        """ Gražina puslapiavimo lentelės baitą, pasislinkusį nuo pradžios
         per ``offset``.
         """
         return self.memory.get_byte((self.PLR, self.PLBR), offset)
 
     def get_code_cell_address(self, virtual_address):
-        u""" Apskaičiuoja realų ląstelės adresą pagal kodo segmento
+        """ Apskaičiuoja realų ląstelės adresą pagal kodo segmento
         virtualų adresą.
         """
 
@@ -99,8 +97,7 @@ class Pager(object):
         min_address = 0
         max_address = C * BLOCK_SIZE
         if not (min_address <= virtual_address <= max_address):
-            raise ValueError(
-                    u'Virtualus adresas nepriklauso kodo segmentui.')
+            raise ValueError('Virtualus adresas nepriklauso kodo segmentui.')
         virtual_block, cell = self.memory.get_address_tuple(virtual_address)
 
         block = hex_to_int(
@@ -109,7 +106,7 @@ class Pager(object):
         return block, cell
 
     def get_data_cell_address(self, virtual_address):
-        u""" Apskaičiuoja realų ląstelės adresą pagal duomenų segmento
+        """ Apskaičiuoja realų ląstelės adresą pagal duomenų segmento
         virtualų adresą.
         """
 
@@ -120,8 +117,7 @@ class Pager(object):
         min_address = 0
         max_address = D * BLOCK_SIZE
         if not (min_address <= virtual_address <= max_address):
-            raise ValueError(
-                    u'Virtualus adresas nepriklauso duomenų segmentui.')
+            raise ValueError('Virtualus adresas nepriklauso duomenų segmentui.')
         virtual_block, cell = self.memory.get_address_tuple(virtual_address)
 
         block = hex_to_int(
@@ -150,19 +146,24 @@ class RealMemory(object):
         Jei ``address`` yra ``tuple`` tipo objektas, tai laikoma, kad
         pirmas elementas ir bloko adresas, o ląstelės bloke. Jei
         ``address`` yra ``int`` tipo objektas, tai bloko adresas
-        apskaičiuojamas ``address / BLOCK_SIZE``, o ląstelės bloke
+        apskaičiuojamas ``address // BLOCK_SIZE``, o ląstelės bloke
         ``address % BLOCK_SIZE``.
         """
+
 
         if isinstance(address, int):
             block = address // BLOCK_SIZE
             cell = address % BLOCK_SIZE
+            print('b', block)
+            print('c', cell)
+            print('a', address)
         else:
+            print('add', address)
             block, cell = address
         return block, cell
 
     def get_address_int(self, address):
-        u""" Grąžina globalų adresą.
+        """ Grąžina globalų adresą.
         Ši funkcija yra atvirkštinė funkcijai ``get_address_tuple``
         """
 
@@ -172,7 +173,7 @@ class RealMemory(object):
         return address
 
     def _get_cell(self, address):
-        u""" Grąžina atminties ląstelę, kuri yra nurodyta adresu.
+        """ Grąžina atminties ląstelę, kuri yra nurodyta adresu.
         """
 
         block, cell = self.get_address_tuple(address)
@@ -191,7 +192,7 @@ class RealMemory(object):
         self._get_cell(address).value = value
 
     def put_data(self, address, data):
-        u""" Nurodytu adresu į atmintį pakrauna duomenis ``data``.
+        """ Nurodytu adresu į atmintį pakrauna duomenis ``data``.
         + Jei duomenys netelpa į tą patį bloką, išmeta išimti
           ``ValueError``.
         + Jei duomenys nesidalina lygiai į žodžius, tai lygiuoja
@@ -212,10 +213,10 @@ class RealMemory(object):
             try:
                 self[block, cell + i] = word
             except IndexError:
-                raise ValueError(u'Duomenys netelpa į bloką.')
+                raise ValueError('Duomenys netelpa į bloką.')
 
     def get_data(self, address, size):
-        u""" Grąžina duomenis nuo nurodyto adreso.
+        """ Grąžina duomenis nuo nurodyto adreso.
         ``size`` – kiek baitų gražinti.
         """
 
@@ -233,7 +234,7 @@ class RealMemory(object):
         return ''.join(data)
 
     def get_byte(self, address, offset):
-        u""" Grąžina baitą, kuris yra nuo žodžio nurodyto ``address``
+        """ Grąžina baitą, kuris yra nuo žodžio nurodyto ``address``
         paslinktas per ``offset`` baitų.
         """
 
@@ -243,7 +244,7 @@ class RealMemory(object):
         return self[address][offset]
 
     def set_byte(self, address, offset, value):
-        u""" Pakeičia baito, kuris yra nuo žodžio nurodyto ``address``
+        """ Pakeičia baito, kuris yra nuo žodžio nurodyto ``address``
         paslinktas per ``offset`` baitų, reikšmę.
         """
 
@@ -254,7 +255,7 @@ class RealMemory(object):
         self[address] = word[0:offset] + value + word[offset+1:]
 
     def create_virtual_memory(self, code, code_size, data, data_size):
-        u""" Išskiria virtualią atmintį ir į ją įkelia kodą bei duomenis.
+        """ Išskiria virtualią atmintį ir į ją įkelia kodą bei duomenis.
         """
 
         pager = Pager(self, C=code_size, D=data_size)
@@ -269,16 +270,17 @@ class RealMemory(object):
                 labels[label.strip()] = i
             else:
                 command = line
-            clean_code.append(command.strip().decode('utf-8'))
+            clean_code.append(command.strip())
 
         for i, command in enumerate(clean_code):
             if u'«' in command:
                 label = command.split(u'«', 1)[1].split(u'»', 1)[0]
                 command = command.replace(
                         u'«{{0}}»'.format(label),
-                        labels[label]).encode('utf-8')
+                        labels[label])
             else:
-                command.encode('utf-8')
+                # command.encode('utf-8')
+                pass
             command += ' ' * (WORD_SIZE - len(command))
             vmcode[i] = command
 
@@ -306,11 +308,11 @@ class RealMemory(object):
         return vmcode, vmdata
 
 class VirtualMemoryCode(object):
-    u""" Virtualios mašinos atmintis, kodo segmentas.
+    """ Virtualios mašinos atmintis, kodo segmentas.
     """
 
     def __init__(self, memory, pager):
-        u"""
+        """
         + ``memory`` – realios mašinos atmintis.
         + ``pager`` – puslapiavimo mechanizmo objektas.
         """
@@ -319,23 +321,23 @@ class VirtualMemoryCode(object):
         self.pager = pager
 
     def __getitem__(self, address):
-        u""" Grąžina adresu nurodytos kodo segmento ląstelės adresą.
+        """ Grąžina adresu nurodytos kodo segmento ląstelės adresą.
         """
 
         return self.memory[self.pager.get_code_cell_address(address)]
 
     def __setitem__(self, address, value):
-        u""" Priskiria adresu nurodytai ląstelei nurodytą reikšmę.
+        """ Priskiria adresu nurodytai ląstelei nurodytą reikšmę.
         """
 
         self.memory[self.pager.get_code_cell_address(address)] = value
 
 class VirtualMemoryData(object):
-    u""" Virtualios mašinos atmintis, duomenų segmentas.
+    """ Virtualios mašinos atmintis, duomenų segmentas.
     """
 
     def __init__(self, memory, pager):
-        u"""
+        """
         + ``memory`` – realios mašinos atmintis.
         + ``pager`` – puslapiavimo mechanizmo objektas.
         """
@@ -344,13 +346,13 @@ class VirtualMemoryData(object):
         self.pager = pager
 
     def __getitem__(self, address):
-        u""" Grąžina adresu nurodytos kodo segmento ląstelės adresą.
+        """ Grąžina adresu nurodytos kodo segmento ląstelės adresą.
         """
 
         return self.memory[self.pager.get_data_cell_address(address)]
 
     def __setitem__(self, address, value):
-        u""" Priskiria adresu nurodytai ląstelei nurodytą reikšmę.
+        """ Priskiria adresu nurodytai ląstelei nurodytą reikšmę.
         """
 
         self.memory[self.pager.get_data_cell_address(address)] = value
