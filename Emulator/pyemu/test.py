@@ -5,8 +5,24 @@
 """
 
 import unittest
+from pyemu.registers import int_to_hex, hex_to_int
 from registers import Cell, Register, IntegerRegister, HexRegister
 from registers import ChoiceRegister, StatusFlagRegister
+
+class Utils(unittest.TestCase):
+    u""" Testai pagalbinėms funkcijoms.
+    """
+    def test_hex_int(self):
+
+        assert int_to_hex(5) == '5'
+        assert int_to_hex(10) == 'a'
+        assert int_to_hex(5, 2) == '05'
+        assert int_to_hex(32, 2) == '20'
+
+        assert hex_to_int('5') == 5
+        assert hex_to_int('a') == 10
+        assert hex_to_int('05') == 5
+        assert hex_to_int('20') == 32
 
 class Registers(unittest.TestCase):
     """ Testai atminties ląstelėms ir registrams.
