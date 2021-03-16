@@ -6,14 +6,14 @@ import inspect
 from registers import Register, IntegerRegister, HexRegister
 from registers import ChoiceRegister, StatusFlagRegister
 
-from pyemu.registers import hex_to_int
+from registers import hex_to_int
 
 class Commands(object):
-    u""" Objektas representuojantis komandų sistemą.
+    """ Objektas representuojantis komandų sistemą.
     """
 
     def __init__(self):
-        u""" Susiindeksuoja visas savo komandas.
+        """ Susiindeksuoja visas savo komandas.
         """
 
         self.commands = dict([
@@ -23,7 +23,7 @@ class Commands(object):
                 ])
 
     def __getitem__(self, command):
-        u""" Gražina komandų sistemos komandą.
+        """ Gražina komandų sistemos komandą.
         """
 
         return self.commands[command]
@@ -107,14 +107,14 @@ class Processor(object):
         Grąžina ``True`` jei pavyko ir ``False`` kitu atveju.
         """
 
-        print u'Žingsnis:', self.IC, self.virtual_memory_code[self.IC]
+        print('Žingsnis:', self.IC, self.virtual_memory_code[self.IC])
         value = self.virtual_memory_code[self.IC]
         self.IC = self.IC + 1
         self.do(**self.parse_command(value))
         return True
 
     def parse_command(self, value):
-        u""" Iš atminties ląstelės reikšmės ``value`` atpažįsta komandos
+        """ Iš atminties ląstelės reikšmės ``value`` atpažįsta komandos
         pavadinimą ir argumentus.
         Grąžina žodymą ``{'command': <atpažinta komanda>,
         'args': <komandos argumentų sąrašas>}``.
@@ -127,10 +127,10 @@ class Processor(object):
         return {'command': command, 'args': args}
 
     def do(self, command, args):
-        u""" Įvykdo komandą ``command`` su argumentais ``args``.
+        """ Įvykdo komandą ``command`` su argumentais ``args``.
         """
 
-        print 'command: {0} args: {1}'.format(command, args)
+        print('command: {0} args: {1}'.format(command, args))
         self.commands[command](self, *args)
 
     def execute(self):
