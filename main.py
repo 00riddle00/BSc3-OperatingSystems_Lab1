@@ -3,7 +3,7 @@
 
 import sys
 
-from pyemu.realmachine import RealMachine
+from realmachine import RealMachine
 
 # import wx
 
@@ -36,8 +36,7 @@ def main(argv=None):
         rm.load_virtual_machine(file)
         rm.processor.execute()
 
-# For testing inside PyCharm
-# file = 'test/test_program_1'
-# rm = RealMachine()
-# rm.load_virtual_machine(file)
-# rm.processor.execute()
+file = 'test_program_1'
+rm = RealMachine()
+rm.load_virtual_machine(file)
+rm.processor.execute()

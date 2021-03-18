@@ -272,5 +272,6 @@ class Registers(unittest.TestCase):
         assert a.sf.SF == 1
         assert a.sf.OF == 1
 
+
 if __name__ == '__main__':
     unittest.main()

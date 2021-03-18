@@ -9,9 +9,9 @@ import re
 
 from math import ceil, floor
 
-from pyemu.registers import WORD_SIZE
-from pyemu.registers import int_to_hex, hex_to_int
-from pyemu.registers import Cell
+from registers import WORD_SIZE
+from registers import int_to_hex, hex_to_int
+from registers import Cell
 
 BLOCKS = 256
 BLOCK_SIZE = 16
