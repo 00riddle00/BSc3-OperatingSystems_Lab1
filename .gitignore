@@ -11,5 +11,6 @@ code/Emulator/parts/
 code/Emulator/.coverage
 code/Emulator/var/
 develop-eggs/
+eggs/
 env/
 .idea/

@@ -21,7 +21,23 @@ source env/bin/activate
 buildout
 ```
 
+### Run simulation
+```
+cd code/Emulator/
+source env/bin/activate
+make run
+```
+
 ### Run tests
+
+#### the preferred way
+```
+cd code/Emulator/
+source env/bin/activate
+make test
+```
+
+#### (the old way)
 * first, go into the directory where test.py is located
 `cd code/Emulator/pyemu/`
 
