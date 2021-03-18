@@ -35,3 +35,9 @@ def main(argv=None):
     else:
         rm.load_virtual_machine(file)
         rm.processor.execute()
+
+# For testing inside PyCharm
+# file = 'test/test_program_1'
+# rm = RealMachine()
+# rm.load_virtual_machine(file)
+# rm.processor.execute()
