@@ -1,4 +1,3 @@
-env/
 *.pdf
 *.aux
 *.log
@@ -7,8 +6,10 @@ env/
 .installed.cfg
 .mr.developer.cfg
 *.egg-info
-code/Emulator/bin
-develop-eggs
-code/Emulator/parts
+code/Emulator/bin/
+code/Emulator/parts/
 code/Emulator/.coverage
-code/Emulator/var
+code/Emulator/var/
+develop-eggs/
+env/
+.idea/

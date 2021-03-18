@@ -8,14 +8,22 @@ Autoriai:
 
 ### Setup environment (linux)
 ```
+cd code/Emulator/
 python3 -m venv env
 source env/bin/activate
 ./env/bin/python3 -m pip install --upgrade pip
+./env/bin/python3 -m pip install -r requirements.txt
+```
+### Build project
+```
+cd code/Emulator/
+source env/bin/activate
+buildout
 ```
 
 ### Run tests
 * first, go into the directory where test.py is located
-`cd OS/Emulator/pyemu/`
+`cd code/Emulator/pyemu/`
 
 * then run tests using one of the commands below
 ```
