@@ -231,7 +231,7 @@ class RealMemory(object):
 
         address = self.get_address_int(address)
 
-        words = size / WORD_SIZE        # Kiek sveikų žodžių reikia
+        words = size // WORD_SIZE        # Kiek sveikų žodžių reikia
                                         # grąžinti.
         data = []
         for i in range(address, address + words):
@@ -247,7 +247,7 @@ class RealMemory(object):
         paslinktas per ``offset`` baitų.
         """
 
-        address = self.get_address_int(address) + offset / WORD_SIZE
+        address = self.get_address_int(address) + offset // WORD_SIZE
         offset %= WORD_SIZE
 
         return self[address][offset]
@@ -257,7 +257,7 @@ class RealMemory(object):
         paslinktas per ``offset`` baitų, reikšmę.
         """
 
-        address = self.get_address_int(address) + offset / WORD_SIZE
+        address = self.get_address_int(address) + offset // WORD_SIZE
         offset %= WORD_SIZE
 
         word = self[address]
@@ -302,7 +302,7 @@ class RealMemory(object):
                 hex_address = result.groupdict()['address']
                 line = line[len('[{0}]:'.format(hex_address)):]
                 address = hex_to_int(hex_address)
-                if not clean_data.has_key(address):
+                if address not in clean_data:
                     clean_data[address] = []
             line = line.replace('\n', '')
             clean_data[address].append(line)
