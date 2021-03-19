@@ -162,11 +162,11 @@ class RealMemory(object):
         if isinstance(address, int):
             block = address // BLOCK_SIZE
             cell = address % BLOCK_SIZE
-            print('b', block)
-            print('c', cell)
-            print('a', address)
+            # print('b', block)
+            # print('c', cell)
+            # print('a', address)
         else:
-            print('add', address)
+            # print('add', address)
             block, cell = address
         return block, cell
 
@@ -282,10 +282,10 @@ class RealMemory(object):
             clean_code.append(command.strip())
 
         for i, command in enumerate(clean_code):
-            if '«' in command:
-                label = command.split('«', 1)[1].split('»', 1)[0]
+            if '~' in command:
+                label = command.split('~', 1)[1].split('@', 1)[0]
                 command = command.replace(
-                        '«{0}»'.format(label),
+                        '~{0}@'.format(label),
                         int_to_hex(labels[label], 3))
             else:
                 command = command

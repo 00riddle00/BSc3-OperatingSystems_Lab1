@@ -29,7 +29,7 @@ class RealMachine(object):
         data = []
         data_size = None
 
-        if isinstance(file, str) or isinstance(file, unicode):
+        if isinstance(file, str):
             with open(file) as fp:
                 code_segment = False
                 data_segment = False

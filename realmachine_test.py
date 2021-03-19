@@ -150,7 +150,7 @@ class RealMemoryTest(unittest.TestCase):
                 'namo:LR1 00a',
                 'LR2 00a\n',
                 'CMP    ',
-                'JE «namo» \n',
+                'JE ~namo@ \n',
                 ]
         data = [
                 '[a]:labas\n\n\n\n',
