@@ -1,9 +1,9 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
+
 
 import inspect
 
-from registers import Register, IntegerRegister, HexRegister
+from registers import Register,  HexRegister
 from registers import ChoiceRegister, StatusFlagRegister
 from registers import hex_to_int
 
@@ -28,19 +28,20 @@ class Commands(object):
         return self.commands[command]
 
     @staticmethod
-    def LR1(proc, x):
-        proc.R1 = proc.virtual_memory_data[hex_to_int(x)]
+    def LR(proc, x):
+        proc.R = proc.virtual_memory_data[hex_to_int(x)]
+        print(proc.R)
+    @staticmethod
+    def LD(proc, x):
+        proc.D = proc.virtual_memory_data[hex_to_int(x)]
+        print(proc.D)
 
     @staticmethod
-    def LR2(proc, x):
-        proc.R2 = proc.virtual_memory_data[hex_to_int(x)]
-
-    @staticmethod
-    def CMP(proc):
-        if proc.R1 > proc.R2:
+    def COMP(proc):
+        if proc.R > proc.D:
             proc.SF.ZF = 0
             proc.SF.SF = 0
-        elif proc.R1 == proc.R2:
+        elif proc.R == proc.D:
             proc.SF.ZF = 1
         else:
             proc.SF.ZF = 0
@@ -57,9 +58,9 @@ class Processor(object):
 
     IC = HexRegister(3)                 # Nurodo vykdomos komandos adresą
                                         # atmintyje.
-    R1 = Register()                     # Žodžio ilgio bendro naudojimo
+    R = Register()                     # Žodžio ilgio bendro naudojimo
                                         # registras.
-    R2 = Register()                     # Žodžio ilgio bendro naudojimo
+    D = Register()                     # Žodžio ilgio bendro naudojimo
                                         # registras.
     PLR = HexRegister(2)                # Puslapių lentelės bloko adresas.
     PLBR = HexRegister(2)               # Puslapių lentelės pirmojo baito
@@ -119,18 +120,22 @@ class Processor(object):
         'args': <komandos argumentų sąrašas>}``.
         """
 
-        parts = value.split()
-        command = parts[0]
-        args = parts[1:]
-
+        if value[2:4].isnumeric():
+            command = value[0:2]
+            args = value[2:4]
+        else:
+            command = value[0:4]
+            args = 1
         return {'command': command, 'args': args}
 
     def do(self, command, args):
         """ Įvykdo komandą ``command`` su argumentais ``args``.
         """
-
-        print('command: {0} args: {1}'.format(command, args))
-        self.commands[command](self, *args)
+        if args == 1:
+            self.commands[command](self)
+        else:
+            print('command: {0} args: {1}'.format(command, args))
+            self.commands[command](self, args)
 
     def execute(self):
         """ Vykdo tol kol vykdosi.

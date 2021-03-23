@@ -1,11 +1,11 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
+
 
 """ Modulis, kuriame realizuotos klasės registrų ir atminties ląstelių
 emuliacijai.
 """
 
-WORD_SIZE = 8                           # Žodžio dydis yra 8 baitai.
+WORD_SIZE = 4                      # Žodžio dydis yra 4 baitai
 
 def int_to_hex(number, size=None):
     """ Konvertuoja sveikąjį teigiamą skaičių ``number`` į simbolių eilutę
@@ -27,7 +27,7 @@ def hex_to_int(number):
 
     return int('0x' + number, 16)
 
-class Cell(object):
+class Byte(object):
     """ Atminties ląstelė. Turi dydį išreikštą simboliais.
     """
 
@@ -75,7 +75,7 @@ class Cell(object):
 
     value = property(get_value, set_value)
 
-class Register(Cell):
+class Register(Byte):
     """ Bendro pobūdžio registras.
     """
 

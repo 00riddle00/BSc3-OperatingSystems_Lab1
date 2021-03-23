@@ -1,12 +1,12 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
+
 
 """ Testai.
 """
 
 import unittest
 from registers import int_to_hex, hex_to_int
-from registers import Cell, Register, IntegerRegister, HexRegister
+from registers import Byte, Register, IntegerRegister, HexRegister
 from registers import ChoiceRegister, StatusFlagRegister
 
 class Utils(unittest.TestCase):
@@ -28,22 +28,22 @@ class Registers(unittest.TestCase):
     """ Testai atminties ląstelėms ir registrams.
     """
 
-    def test_cell(self):
+    def test_byte(self):
 
-        cell2B = Cell(2)
-        assert cell2B.value == '00'
-        cell2B.value = 0
-        assert cell2B.value == ' 0'
-        cell2B.value = 13
-        assert cell2B.value == '13'
-        cell2B.value = 'ab'
-        assert cell2B.value == 'ab'
-        cell2B.value = 'b'
-        assert cell2B.value == ' b'
-        cell2B.value = 'š'
-        assert cell2B.value == ' š'
+        byte2B = Byte(4)
+        assert byte2B.value == '0000'
+        byte2B.value = 0
+        assert byte2B.value == '   0'
+        byte2B.value = 13
+        assert byte2B.value == '  13'
+        byte2B.value = 'ab'
+        assert byte2B.value == '  ab'
+        byte2B.value = 'b'
+        assert byte2B.value == '   b'
+        byte2B.value = 'š'
+        assert byte2B.value == '   š'
         try:
-            cell2B.value = 123
+            byte2B.value = 12345
         except ValueError as e:
             assert str(e) == 'Reikšmė netelpa ląstelėje.'
         else:

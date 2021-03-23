@@ -1,0 +1,11 @@
+.code
+LR02
+LD08
+COMP
+JE00
+HALT
+
+.data06
+[2]:laba
+[8]:laba
+======

@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 """ Modulis, kuriame realizuotos klasės mašinos atminties emuliacijos
 realizacijai.
@@ -11,7 +10,7 @@ from math import ceil, floor
 
 from registers import WORD_SIZE
 from registers import int_to_hex, hex_to_int
-from registers import Cell
+from registers import Byte
 
 BLOCKS = 256
 BLOCK_SIZE = 16
@@ -86,7 +85,7 @@ class Pager(object):
         """
         return self.memory.get_byte((self.PLR, self.PLBR), offset)
 
-    def get_code_cell_address(self, virtual_address):
+    def get_code_byte_address(self, virtual_address):
         """ Apskaičiuoja realų ląstelės adresą pagal kodo segmento
         virtualų adresą.
         """
@@ -98,14 +97,14 @@ class Pager(object):
         max_address = C * BLOCK_SIZE
         if not (min_address <= virtual_address <= max_address):
             raise ValueError('Virtualus adresas nepriklauso kodo segmentui.')
-        virtual_block, cell = self.memory.get_address_tuple(virtual_address)
+        virtual_block, byte = self.memory.get_address_tuple(virtual_address)
 
         block = hex_to_int(
                 self.get_byte(4 + 2 * virtual_block) +
                 self.get_byte(4 + 2 * virtual_block + 1))
-        return block, cell
+        return block, byte
 
-    def get_data_cell_address(self, virtual_address):
+    def get_data_byte_address(self, virtual_address):
         """ Apskaičiuoja realų ląstelės adresą pagal duomenų segmento
         virtualų adresą.
         """
@@ -118,12 +117,12 @@ class Pager(object):
         max_address = D * BLOCK_SIZE
         if not (min_address <= virtual_address <= max_address):
             raise ValueError('Virtualus adresas nepriklauso duomenų segmentui.')
-        virtual_block, cell = self.memory.get_address_tuple(virtual_address)
+        virtual_block, byte = self.memory.get_address_tuple(virtual_address)
 
         block = hex_to_int(
                 self.get_byte(4 + 2 * (C + virtual_block)) +
                 self.get_byte(4 + 2 * (C + virtual_block) + 1))
-        return block, cell
+        return block, byte
 
 class RealMemory(object):
     """ Realios mašinos atmintis.
@@ -141,12 +140,12 @@ class RealMemory(object):
         else:
             self.handler = handler
 
-        self._cells = []
+        self._bytes = []
         for i in range(BLOCKS):
             block = []
             for j in range(BLOCK_SIZE):
-                block.append(Cell())
-            self._cells.append(block)
+                block.append(Byte())
+            self._bytes.append(block)
 
     def get_address_tuple(self, address):
         """ Grąžina bloko ir elemento bloke adresus.
@@ -161,14 +160,14 @@ class RealMemory(object):
 
         if isinstance(address, int):
             block = address // BLOCK_SIZE
-            cell = address % BLOCK_SIZE
+            byte = address % BLOCK_SIZE
             # print('b', block)
-            # print('c', cell)
+            # print('c', byte)
             # print('a', address)
         else:
             # print('add', address)
-            block, cell = address
-        return block, cell
+            block, byte = address
+        return block, byte
 
     def get_address_int(self, address):
         """ Grąžina globalų adresą.
@@ -176,29 +175,29 @@ class RealMemory(object):
         """
 
         if not isinstance(address, int):
-            block, cell = address
-            address = block * BLOCK_SIZE + cell
+            block, byte = address
+            address = block * BLOCK_SIZE + byte
         return address
 
-    def _get_cell(self, address):
+    def _get_byte(self, address):
         """ Grąžina atminties ląstelę, kuri yra nurodyta adresu.
         """
 
-        block, cell = self.get_address_tuple(address)
-        self.handler(block, cell)
-        return self._cells[block][cell]
+        block, byte = self.get_address_tuple(address)
+        self.handler(block, byte)
+        return self._bytes[block][byte]
 
     def __getitem__(self, address):
         """ Grąžina adresu nurodytos ląstelės reikšmę.
         """
 
-        return self._get_cell(address).value
+        return self._get_byte(address).value
 
     def __setitem__(self, address, value):
         """ Priskiria adresu nurodytai ląstelei nurodytą reikšmę.
         """
 
-        self._get_cell(address).value = value
+        self._get_byte(address).value = value
 
     def put_data(self, address, data):
         """ Nurodytu adresu į atmintį pakrauna duomenis ``data``.
@@ -208,7 +207,7 @@ class RealMemory(object):
           į kairę ir trūkstamą dalį užpildo tarpais.
         """
 
-        block, cell = self.get_address_tuple(address)
+        block, byte = self.get_address_tuple(address)
 
         # Apvalina iki žodžių.
         size = float(len(data))
@@ -220,7 +219,7 @@ class RealMemory(object):
                 data[i:i+WORD_SIZE] for i in range(0, len(data), WORD_SIZE)]
         for i, word in enumerate(words):
             try:
-                self[block, cell + i] = word
+                self[block, byte + i] = word
             except IndexError:
                 raise ValueError('Duomenys netelpa į bloką.')
 
@@ -332,13 +331,13 @@ class VirtualMemoryCode(object):
         """ Grąžina adresu nurodytos kodo segmento ląstelės adresą.
         """
 
-        return self.memory[self.pager.get_code_cell_address(address)]
+        return self.memory[self.pager.get_code_byte_address(address)]
 
     def __setitem__(self, address, value):
         """ Priskiria adresu nurodytai ląstelei nurodytą reikšmę.
         """
 
-        self.memory[self.pager.get_code_cell_address(address)] = value
+        self.memory[self.pager.get_code_byte_address(address)] = value
 
 class VirtualMemoryData(object):
     """ Virtualios mašinos atmintis, duomenų segmentas.
@@ -357,10 +356,10 @@ class VirtualMemoryData(object):
         """ Grąžina adresu nurodytos kodo segmento ląstelės adresą.
         """
 
-        return self.memory[self.pager.get_data_cell_address(address)]
+        return self.memory[self.pager.get_data_byte_address(address)]
 
     def __setitem__(self, address, value):
         """ Priskiria adresu nurodytai ląstelei nurodytą reikšmę.
         """
 
-        self.memory[self.pager.get_data_cell_address(address)] = value
+        self.memory[self.pager.get_data_byte_address(address)] = value

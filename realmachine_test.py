@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
+
 
 """ Testai.
 """
@@ -13,6 +13,7 @@ from memory import VirtualMemoryCode, VirtualMemoryData
 from processor import Processor
 
 class RealMachineTest(unittest.TestCase):
+
     """ Testai pagalbinėms funkcijoms.
     """
 
@@ -49,7 +50,7 @@ class RealMemoryTest(unittest.TestCase):
         assert r_mem.get_address_int(203) == 203
         assert r_mem.get_address_int((12, 11)) == 203
 
-    def test_cell_access(self):
+    def test_byte_access(self):
 
         r_mem = RealMemory()
 
@@ -110,16 +111,16 @@ class RealMemoryTest(unittest.TestCase):
 
         assert pager.get_byte(0) == '0'
         assert pager.get_byte(1) == '1'
-        assert pager.get_code_cell_address((0, 4)) == (16, 4)
-        assert pager.get_data_cell_address((0, 5)) == (17, 5)
+        assert pager.get_code_byte_address((0, 4)) == (16, 4)
+        assert pager.get_data_byte_address((0, 5)) == (17, 5)
         try:
-            pager.get_code_cell_address((1, 4))
+            pager.get_code_byte_address((1, 4))
         except ValueError as e:
             assert str(e) == 'Virtualus adresas nepriklauso kodo segmentui.'
         else:
             self.fail('Turėjo būti išmesta išimtis.')
         try:
-            pager.get_data_cell_address((1, 4))
+            pager.get_data_byte_address((1, 4))
         except ValueError as e:
             assert str(e) == 'Virtualus adresas nepriklauso duomenų segmentui.'
         else:

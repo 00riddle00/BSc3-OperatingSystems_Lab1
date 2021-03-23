@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
+
 
 from math import ceil
 
@@ -36,20 +36,20 @@ class RealMachine(object):
                 for line in fp:
 
                     if not code_segment and not data_segment and \
-                            line == 'CODE\n':
+                            line == '.code\n':
                         code_segment = True
                         continue
                     elif code_segment and not data_segment and \
-                            line == 'ENDCODE\n':
+                            line == 'HALT\n':
                         code_segment = False
                         continue
                     elif not code_segment and not data_segment and \
-                            line.startswith('DATA '):
+                            line.startswith('.data06'):
                         data_segment = True
-                        data_size = int(line[4:])
+                        data_size = int(line[5:])
                         continue
                     elif not code_segment and data_segment and \
-                            line == 'ENDDATA\n':
+                            line == '======\n':
                         data_segment = False
                         continue
 
