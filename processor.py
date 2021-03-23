@@ -28,11 +28,14 @@ class Commands(object):
         return self.commands[command]
 
     @staticmethod
-    def LR1(proc, x):
+    def LR(proc, x):
+        # print('proc', proc)
+        # print('x', x)
+        # exit()
         proc.R1 = proc.virtual_memory_data[hex_to_int(x)]
 
     @staticmethod
-    def LR2(proc, x):
+    def LD(proc, x):
         proc.R2 = proc.virtual_memory_data[hex_to_int(x)]
 
     @staticmethod
@@ -108,6 +111,7 @@ class Processor(object):
 
         print('Žingsnis:', self.IC, self.virtual_memory_code[self.IC])
         value = self.virtual_memory_code[self.IC]
+        # value = 'LR 00a"
         self.IC = self.IC + 1
         self.do(**self.parse_command(value))
         return True
@@ -126,10 +130,14 @@ class Processor(object):
         return {'command': command, 'args': args}
 
     def do(self, command, args):
+        # type(command) = string
+        # type(args) = list
+
         """ Įvykdo komandą ``command`` su argumentais ``args``.
         """
 
         print('command: {0} args: {1}'.format(command, args))
+        # command = LR, args = ['00c']
         self.commands[command](self, *args)
 
     def execute(self):

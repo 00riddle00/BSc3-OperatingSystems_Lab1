@@ -57,11 +57,17 @@ class RealMachine(object):
                         code.append(line)
                     if data_segment:
                         data.append(line)
+
+                # data= ['[a]:labas\n', '[b]:babas\n']
+
                 code_size = int(ceil(float(len(code)) / BLOCK_SIZE))
 
+            # sukuria kodo segmenta ir data segmenta virtualiai masinai
             self.virtual_memory_code, self.virtual_memory_data = \
                     self.real_memory.create_virtual_memory(
                             code, code_size, data, data_size)
+
+
             self.processor.PLR = self.virtual_memory_code.pager.PLR
             self.processor.PLBR = self.virtual_memory_code.pager.PLBR
             self.processor.set_virtual_memory(

@@ -1,10 +1,11 @@
 CODE
-namo:LR1 00a
-LR2 00a
+namo:LR 00a
+LD 00b
 CMP
 JE ~namo@
 ENDCODE
 
 DATA 1
 [a]:labas
+[b]:labas
 ENDDATA
