@@ -1,10 +1,10 @@
 amzinasC
 ------
 .code
-LR 60
-LD 70
-CMP
-JE 00
+LR60
+LD70
+COMP
+JE00
 HALT
 
 .data06

@@ -28,21 +28,18 @@ class Commands(object):
 
     @staticmethod
     def LR(proc, x):
-        # print('proc', proc)
-        # print('x', x)
-        # exit()
-        proc.R1 = proc.virtual_memory_data[hex_to_int(x)]
+        proc.R = proc.virtual_memory_data[hex_to_int(x)]
 
     @staticmethod
     def LD(proc, x):
-        proc.R2 = proc.virtual_memory_data[hex_to_int(x)]
+        proc.D = proc.virtual_memory_data[hex_to_int(x)]
 
     @staticmethod
-    def CMP(proc):
-        if proc.R1 > proc.R2:
+    def COMP(proc):
+        if proc.R > proc.D:
             proc.SF.ZF = 0
             proc.SF.SF = 0
-        elif proc.R1 == proc.R2:
+        elif proc.R == proc.D:
             proc.SF.ZF = 1
         else:
             proc.SF.ZF = 0
@@ -59,9 +56,9 @@ class Processor(object):
 
     IC = HexRegister(3)                 # Nurodo vykdomos komandos adresą
                                         # atmintyje.
-    R1 = Register()                     # Žodžio ilgio bendro naudojimo
+    R = Register()                     # Žodžio ilgio bendro naudojimo
                                         # registras.
-    R2 = Register()                     # Žodžio ilgio bendro naudojimo
+    D = Register()                     # Žodžio ilgio bendro naudojimo
                                         # registras.
     PLR = HexRegister(2)                # Puslapių lentelės bloko adresas.
     PLBR = HexRegister(2)               # Puslapių lentelės pirmojo baito
@@ -122,21 +119,22 @@ class Processor(object):
         'args': <komandos argumentų sąrašas>}``.
         """
 
-        parts = value.split()
-        command = parts[0]
-        args = parts[1:]
+        args = []
+        last_symbol = value[3]
+
+        if last_symbol.isdigit() or ord(last_symbol.upper()) in range(65,71):
+            command = value[0:2]
+            args.append(value[2:4])
+        else:
+            command = value.strip()
 
         return {'command': command, 'args': args}
 
     def do(self, command, args):
-        # type(command) = string
-        # type(args) = list
-
         """ Įvykdo komandą ``command`` su argumentais ``args``.
         """
 
         print('command: {0} args: {1}'.format(command, args))
-        # command = LR, args = ['00c']
         self.commands[command](self, *args)
 
     def execute(self):
