@@ -1,14 +1,15 @@
+amzinasC
+------
 .code
-namo:LR 00a
-LD 00b
+LR 60
+LD 70
 CMP
-JE ~namo@
+JE 00
+HALT
 
 .data06
 laba
-ryta
 
 .data07
 laba
-diena
-
+======

@@ -4,7 +4,9 @@ from math import ceil
 
 from processor import Processor
 from memory import RealMemory
-from memory import BLOCK_SIZE
+
+CODE_SIZE = 6
+DATA_SIZE = 8
 
 class RealMachine(object):
     """ Realią mašiną simuliuojantis objektas.
@@ -24,11 +26,11 @@ class RealMachine(object):
         """
 
         code = []
-        code_size = 6
-        data = []
-        data_size = None
+        code_size = CODE_SIZE
         data = {}
-        block_nr = 0
+        data_size = None
+        block_no = 0
+        words_in_block = 0
 
         if isinstance(file, str):
             with open(file) as fp:
@@ -44,17 +46,19 @@ class RealMachine(object):
                     elif line.startswith('.data'):
                         code_segment = False
                         data_segment = True
-                        data_size = 8
+                        data_size = DATA_SIZE
 
                     if code_segment:
                         code.append(line)
                     if data_segment:
                         if line.startswith('.data'):
-                            block_nr = int(line[5:])
-                            data[block_nr] = []
+                            block_no = int(line[5:])
+                            data[block_no] = []
+                            words_in_block = 0
                         else:
-                            # TODO check for max 16 words
-                            data[block_nr].append(line)
+                            if words_in_block < 16:
+                                data[block_no].append(line)
+                                words_in_block += 1
 
             self.virtual_memory_code, self.virtual_memory_data = \
                     self.real_memory.create_virtual_memory(
