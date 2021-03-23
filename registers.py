@@ -1,5 +1,4 @@
 #!/usr/bin/python
-# -*- coding: utf-8 -*-
 
 """ Modulis, kuriame realizuotos klasės registrų ir atminties ląstelių
 emuliacijai.
