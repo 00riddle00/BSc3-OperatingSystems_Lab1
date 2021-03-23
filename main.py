@@ -1,8 +1,6 @@
-
-import sys
+#!/usr/bin/python
 
 from realmachine import RealMachine
-
 
 file = 'test_program_1'
 rm = RealMachine()

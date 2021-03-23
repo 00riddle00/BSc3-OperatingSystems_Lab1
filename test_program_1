@@ -1,11 +1,14 @@
-CODE
+.code
 namo:LR 00a
 LD 00b
 CMP
 JE ~namo@
-ENDCODE
 
-DATA 1
-[a]:labas
-[b]:labas
-ENDDATA
+.data06
+laba
+ryta
+
+.data07
+laba
+diena
+

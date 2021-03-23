@@ -294,49 +294,14 @@ class RealMemory(object):
 
         # Įkeliamas duomenų segmentas.
         vmdata = VirtualMemoryData(self, pager)
-        clean_data = {}
-        # type(clean_data) = dict
-        address = 0
-        for i, line in enumerate(data):
-            result = re.search('^\[(?P<address>\w+)\]:', line)
-            if result:
-                # result.groupdict() = {'address': 'a'}
-                hex_address = result.groupdict()['address']
-                # hex_address = 'a'
-                line = line[len('[{0}]:'.format(hex_address)):]
-                # line = 'labas'
-                address = hex_to_int(hex_address)
-                # address = 10
-                if address not in clean_data:
-                    clean_data[address] = []
-            line = line.replace('\n', '')
-            clean_data[address].append(line)
-            # clean_data:  {10: ['labas']}
 
-        # atmintyje duomuo max 8 baitai (=WORD_SIZE)
-        word_format = '{{0:<{0}}}'.format(WORD_SIZE)
-        # word_format: kazkoks zodis bus patalpintas, max uzima 8 simbolius,
-        #   jei maziau - priekyje paddingas uzpildomas tarpais
-        for address, lines in clean_data.items():
-            data = ''.join(lines)
-            # data = 'labas'
-            for i, j in enumerate(range(0, len(data), WORD_SIZE)):
-                # range(0, 5, 8) -> nuo 0 iki 4 (imtinai), zingsnis 8,
-                # t.y. ims 0, po to 8, bet 8 nepatenka tarp [0;4], tai ims tik i = 0, j = 0
-                #
-                # address = 10
-                # i = 0
-                # j = 0
-                #
-                # cia kvieciamas vmdata objekto (VirtualMemoryData) setteris
-                # data = 'labas' (zr auksciau)
-                #
-                # vmdata[10 + 0]
-                # data[j:j + WORD_SIZE] = data[0:0+8] = 'labas'[0:8] = 'labas'
-                # word_format.format(data[j:j + WORD_SIZE]) = 'labas   '
-                vmdata[address + i] = word_format.format(
-                        data[j:j + WORD_SIZE])
-                # vmdata[10] = '   labas'
+        for block in data.keys():
+            for word, line in enumerate(data[block]):
+                hex_address = f'{block}{word}'
+                address = hex_to_int(hex_address)
+                line = line.replace('\n', '')
+                vmdata[address] = line
+
         return vmcode, vmdata
 
 class VirtualMemoryCode(object):
@@ -383,24 +348,12 @@ class VirtualMemoryData(object):
     def __getitem__(self, address):
         """ Grąžina adresu nurodytos kodo segmento ląstelės adresą.
         """
-        # print("getter")
 
         return self.memory[self.pager.get_data_cell_address(address)]
 
     def __setitem__(self, address, value):
-        # address = 10
-        # value = '   labas'
-
         """ Priskiria adresu nurodytai ląstelei nurodytą reikšmę.
         """
-        # print("setter")
 
-        # address paduodamas kaip 'virtualus adresas'
-        # self.pager.get_data_cell_address(address) = (17, 10)
-        #
-        # address = [0;15] -> (17, address)
-        # address = [16;31] -> (18, address-16)
-        # address = [32:] -> error (nes 'DATA 2' -> tik 2 blokai naudojami)
-        # (17,10) reiskia 17 blokas, 10 zodis (realios masinos atmintyje)
         # print(f's={self.pager.get_data_cell_address(address)}')
         self.memory[self.pager.get_data_cell_address(address)] = value

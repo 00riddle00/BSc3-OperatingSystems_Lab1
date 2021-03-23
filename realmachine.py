@@ -25,9 +25,11 @@ class RealMachine(object):
         """
 
         code = []
-        code_size = None
+        code_size = 6
         data = []
         data_size = None
+        data = {}
+        block_nr = 0
 
         if isinstance(file, str):
             with open(file) as fp:
@@ -35,34 +37,26 @@ class RealMachine(object):
                 data_segment = False
                 for line in fp:
 
-                    if not code_segment and not data_segment and \
-                            line == 'CODE\n':
+                    if line == '\n':
+                        continue
+                    elif not data_segment and line == '.code\n':
                         code_segment = True
                         continue
-                    elif code_segment and not data_segment and \
-                            line == 'ENDCODE\n':
+                    elif line.startswith('.data'):
                         code_segment = False
-                        continue
-                    elif not code_segment and not data_segment and \
-                            line.startswith('DATA '):
                         data_segment = True
-                        data_size = int(line[4:])
-                        continue
-                    elif not code_segment and data_segment and \
-                            line == 'ENDDATA\n':
-                        data_segment = False
-                        continue
+                        data_size = 8
 
                     if code_segment:
                         code.append(line)
                     if data_segment:
-                        data.append(line)
+                        if line.startswith('.data'):
+                            block_nr = int(line[5:])
+                            data[block_nr] = []
+                        else:
+                            # TODO check for max 16 words
+                            data[block_nr].append(line)
 
-                # data= ['[a]:labas\n', '[b]:babas\n']
-
-                code_size = int(ceil(float(len(code)) / BLOCK_SIZE))
-
-            # sukuria kodo segmenta ir data segmenta virtualiai masinai
             self.virtual_memory_code, self.virtual_memory_data = \
                     self.real_memory.create_virtual_memory(
                             code, code_size, data, data_size)
