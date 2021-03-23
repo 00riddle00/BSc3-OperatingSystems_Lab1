@@ -1,0 +1,10 @@
+CODE
+namo:LR1 00a
+LR2 00a
+CMP
+JE ~namo@
+ENDCODE
+
+DATA 1
+[a]:labas
+ENDDATA
