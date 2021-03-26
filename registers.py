@@ -30,20 +30,15 @@ class Cell(object):
     """ Atminties ląstelė. Turi dydį išreikštą simboliais.
     """
 
-    def __init__(self, size=WORD_SIZE, handler=None):
+    def __init__(self, size=WORD_SIZE):
         """
         + ``size`` – ląstelės dydis baitais.
-        + ``handler`` – funkcija, kuri yra iškviečiama, kai pasikeičia
           ląstelės reikšmė.
         """
 
         self.size = size
         self._format = '{{: >{0}}}'.format(self.size)
         self._value = '0'*self.size
-        if not handler:
-            self.handler = lambda : None
-        else:
-            self.handler = handler
 
     def set_value(self, value):
         """ Patikrina ar reikšmė telpa atminties ląstelėje ir jei taip,
@@ -55,7 +50,6 @@ class Cell(object):
         value = str(value)
         if len(value) <= self.size:
             self._value = self._format.format(value)
-            self.handler()
         else:
             raise ValueError('Reikšmė netelpa ląstelėje.')
         return self
