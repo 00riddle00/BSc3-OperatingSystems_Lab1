@@ -6,6 +6,13 @@ from registers import Register, IntegerRegister, HexRegister
 from registers import ChoiceRegister, StatusFlagRegister
 from registers import hex_to_int
 
+def debug(text):
+    global DEBUG
+    if DEBUG:
+        print(text)
+
+DEBUG = 1
+
 class Commands(object):
     """ Objektas representuojantis komandų sistemą.
     """
@@ -113,7 +120,7 @@ class Processor(object):
         Grąžina ``True`` jei pavyko ir ``False`` kitu atveju.
         """
 
-        # print('Žingsnis:', self.IC, self.virtual_memory_code[self.IC])
+        debug(f'Žingsnis: {self.IC} {self.virtual_memory_code[self.IC]}')
         value = self.virtual_memory_code[self.IC]
         # value = 'LR 00a"
         self.IC = self.IC + 1
@@ -146,7 +153,7 @@ class Processor(object):
         """ Įvykdo komandą ``command`` su argumentais ``args``.
         """
 
-        # print('command: {0} args: {1}'.format(command, args))
+        debug(f'command: {command} args: {args}')
         self.commands[command](self, *args)
 
     def execute(self):
