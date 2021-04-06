@@ -38,9 +38,9 @@ class RealMachine(object):
                 data_segment = False
                 for line in fp:
 
-                    if line == '\n':
+                    if line == '\r\n':
                         continue
-                    elif not data_segment and line == '.code\n':
+                    elif not data_segment and line == '.code\r\n':
                         code_segment = True
                         continue
                     elif line.startswith('.data'):
