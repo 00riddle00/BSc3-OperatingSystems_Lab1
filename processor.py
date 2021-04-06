@@ -11,7 +11,8 @@ def debug(text):
     if DEBUG:
         print(text)
 
-DEBUG = 1
+DEBUG = 0
+
 
 class Commands(object):
     """ Objektas representuojantis komandų sistemą.
@@ -47,8 +48,13 @@ class Commands(object):
 
     @staticmethod
     def PD(proc, x):
-        #reik pakeisti
-        print(proc.virtual_memory_data[hex_to_int(x)])
+        r = int(proc.R)
+        while(r > 0):
+            print(proc.virtual_memory_data[hex_to_int(x)])
+            r = r -1
+            a = int(x)
+            a = a + 1
+            x = str(a)
 
     @staticmethod
     def GN(proc, x):
@@ -88,8 +94,10 @@ class Commands(object):
     @staticmethod
     def DIVI(proc):
         #Flags turi keistis!!!!!!!!!!!!!!!
-        proc.R = proc.R / proc.D
-
+        r = int(proc.R)
+        d = int(proc.D)
+        result = r / d
+        proc.R = str(result)
     @staticmethod
     def XCHG(proc):
         tmp = proc.R
