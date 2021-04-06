@@ -1,19 +1,15 @@
 amzinasC
 ------
 .code
-PD60
-LR70
-LD71
+LR60
+LD70
 COMP
-JE01
-PD61
+JE00
 HALT
 
 .data06
-true
-done
+laba
 
 .data07
-laba
 laba
 ======
