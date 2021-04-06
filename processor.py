@@ -42,12 +42,22 @@ class Commands(object):
         proc.D = proc.virtual_memory_data[hex_to_int(x)]
 
     @staticmethod
+    def SR(proc, x):
+        proc.virtual_memory_data[hex_to_int(x)] = proc.R
+
+    @staticmethod
     def PD(proc, x):
+        #reik pakeisti
         print(proc.virtual_memory_data[hex_to_int(x)])
 
     @staticmethod
-    def HALT(proc):
-        print("Program has finished")
+    def GN(proc, x):
+        valueEntered = proc.Read()
+        proc.virtual_memory_data[hex_to_int(x)] = valueEntered
+
+    # @staticmethod
+    # def HALT(proc):
+    #     print("Program has finished")
 
     @staticmethod
     def COMP(proc):
@@ -74,14 +84,23 @@ class Commands(object):
         proc.R = proc.R - 1
 
     @staticmethod
-    def GN(proc, x):
-        valueEntered = proc.Read()
-        proc.virtual_memory_data[hex_to_int(x)] = valueEntered
+    def DIVI(proc):
+        #Flags turi keistis!!!!!!!!!!!!!!!
+        proc.R = proc.R / proc.D
+
+    @staticmethod
+    def XCHG(proc):
+        tmp = proc.R
+        proc.R = proc.D
+        proc.D = tmp
 
     @staticmethod
     def PNUM(proc):
-        rValue = proc.R
-        proc(rValue)
+        print(proc.R)
+
+    @staticmethod
+    def NOOP(proc):
+        pass
 
 class Processor(object):
     """ Realios mašinos procesorius.

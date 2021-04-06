@@ -115,8 +115,8 @@ class Pager(object):
 
         min_address = 0
         max_address = D * BLOCK_SIZE
-        if not (min_address <= virtual_address <= max_address):
-            raise ValueError('Virtualus adresas nepriklauso duomenų segmentui.')
+        # if not (min_address <= virtual_address <= max_address):
+        #     raise ValueError('Virtualus adresas nepriklauso duomenų segmentui.')
         virtual_block, cell = self.memory.get_address_tuple(virtual_address)
 
         block = hex_to_int(
