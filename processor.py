@@ -65,6 +65,24 @@ class Commands(object):
         if proc.SF.ZF == 1:
             proc.IC = x
 
+    @staticmethod
+    def MV(proc, x):
+        proc.R = hex_to_int(x)
+
+    @staticmethod
+    def DECR(proc):
+        proc.R = proc.R - 1
+
+    @staticmethod
+    def GN(proc, x):
+        valueEntered = proc.Read()
+        proc.virtual_memory_data[hex_to_int(x)] = valueEntered
+
+    @staticmethod
+    def PNUM(proc):
+        rValue = proc.R
+        proc(rValue)
+
 class Processor(object):
     """ Realios mašinos procesorius.
     """
@@ -154,6 +172,12 @@ class Processor(object):
 
         debug(f'command: {command} args: {args}')
         self.commands[command](self, *args)
+
+    def Read(self):
+        """ Nuskaitom vartotojo ivesti
+        """
+        input1 = input()
+        return input1
 
     def execute(self):
         """ Vykdo tol kol vykdosi.

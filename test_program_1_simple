@@ -1,15 +1,11 @@
 amzinasC
 ------
 .code
-LR60
-LD70
-COMP
-JE00
+MV02
+PNUM
 HALT
 
 .data06
 laba
 
-.data07
-laba
 ======
