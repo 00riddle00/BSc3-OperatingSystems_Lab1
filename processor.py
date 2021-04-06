@@ -35,6 +35,14 @@ class Commands(object):
         proc.D = proc.virtual_memory_data[hex_to_int(x)]
 
     @staticmethod
+    def PD(proc, x):
+        print(proc.virtual_memory_data[hex_to_int(x)])
+
+    @staticmethod
+    def HALT(proc):
+        print("Program has finished")
+
+    @staticmethod
     def COMP(proc):
         if proc.R > proc.D:
             proc.SF.ZF = 0
@@ -105,10 +113,14 @@ class Processor(object):
         Grąžina ``True`` jei pavyko ir ``False`` kitu atveju.
         """
 
-        print('Žingsnis:', self.IC, self.virtual_memory_code[self.IC])
+        # print('Žingsnis:', self.IC, self.virtual_memory_code[self.IC])
         value = self.virtual_memory_code[self.IC]
         # value = 'LR 00a"
         self.IC = self.IC + 1
+
+        if value[0] == 'H':  # meaning 'HALT'
+            return False
+
         self.do(**self.parse_command(value))
         return True
 
@@ -134,7 +146,7 @@ class Processor(object):
         """ Įvykdo komandą ``command`` su argumentais ``args``.
         """
 
-        print('command: {0} args: {1}'.format(command, args))
+        # print('command: {0} args: {1}'.format(command, args))
         self.commands[command](self, *args)
 
     def execute(self):
