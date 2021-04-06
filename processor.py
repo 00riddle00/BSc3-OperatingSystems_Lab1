@@ -81,7 +81,9 @@ class Commands(object):
 
     @staticmethod
     def DECR(proc):
-        proc.R = proc.R - 1
+        value = int(proc.R)
+        value = value - 1
+        proc.R = str(value)
 
     @staticmethod
     def DIVI(proc):
