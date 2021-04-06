@@ -119,9 +119,8 @@ class Processor(object):
 
         Grąžina ``True`` jei pavyko ir ``False`` kitu atveju.
         """
-
-        debug(f'Žingsnis: {self.IC} {self.virtual_memory_code[self.IC]}')
         value = self.virtual_memory_code[self.IC]
+        debug(f'Žingsnis: {self.IC} {value}')
         # value = 'LR 00a"
         self.IC = self.IC + 1
 
