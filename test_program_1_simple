@@ -2,7 +2,7 @@ div2num
 ------
 .code
 MV02
-PNUM
+PD60
 DECR
 PD65
 MV03
@@ -19,16 +19,16 @@ MV00
 XCHG
 LR71
 COMP
-JE1A
+JE1B
 MV03
 PD67
+LR71
+XCHG
 LR70
-LD71
-
 DIVI
 PNUM
 HALT
-NOOP
+
 MV01
 
 .data06
@@ -44,6 +44,6 @@ uo_y
 ra__
 
 .data07
-errh
-andl
+....
+....
 ======
