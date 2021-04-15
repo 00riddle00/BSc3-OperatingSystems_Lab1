@@ -18,8 +18,8 @@ class RealMachine(object):
 
         self.real_memory = RealMemory()
         self.processor = Processor(self.real_memory)
-        self.virtual_memory_data = None
-        self.virtual_memory_code = None
+        self.virtual_memory = None
+
 
     def load_virtual_machine(self, file):
         """ Pakrauna virtualią mašiną.
@@ -28,7 +28,7 @@ class RealMachine(object):
         code = []
         code_size = CODE_SIZE
         data = {}
-        data_size = None
+        data_size = 16
         block_no = 0
         words_in_block = 0
 
@@ -46,7 +46,6 @@ class RealMachine(object):
                     elif line.startswith('.data'):
                         code_segment = False
                         data_segment = True
-                        data_size = DATA_SIZE
 
                     if code_segment:
                         code.append(line)
@@ -60,9 +59,8 @@ class RealMachine(object):
                                 data[block_no].append(line)
                                 words_in_block += 1
 
-            self.virtual_memory = \
-                    self.real_memory.create_virtual_memory(
-                            code, code_size, data, data_size)
+            self.virtual_memory  = self.real_memory.create_virtual_memory(code, data, data_size)
+
 
 
             self.processor.PLR = self.virtual_memory.pager.PLR

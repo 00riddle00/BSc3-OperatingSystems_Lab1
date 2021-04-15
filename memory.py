@@ -47,9 +47,9 @@ class Pager(object):
         if address is not None:
             self.read(address)
         else:
-            self.create(C, D)
+            self.create(D)
 
-    def create(self, C, D):
+    def create(self, D):
         """ Sukuria virtualios mašinos puslapiavimo lentelę. Nustato
         PLR ir PLBR.
         """
@@ -58,18 +58,18 @@ class Pager(object):
         self.PLBR = 0
 
         data = []
-        if C < 1:
-            raise ValueError('Kodo segmento dydis turi būti didesnis už 1.')
-        else:
-            data.append(ih(C))
-        if D < 0:
-            raise ValueError('Duomenų segmento dydis turi būti teigiamas.')
-        else:
-            data.append(ih(D))
-        for i in range(PAGER_SIZE, PAGER_SIZE + C):
+        # if D < 1:
+        #     raise ValueError('Kodo segmento dydis turi būti didesnis už 1.')
+        # else:
+        #     data.append(ih(D))
+        # if D < 0:
+        #     raise ValueError('Duomenų segmento dydis turi būti teigiamas.')
+        # else:
+        #     data.append(ih(D))
+        for i in range(PAGER_SIZE, PAGER_SIZE + D):
             data.append(ih(i))
-        for i in range(PAGER_SIZE + C, PAGER_SIZE + C + D):
-            data.append(ih(i))
+        # for i in range(PAGER_SIZE + C, PAGER_SIZE + C + D):
+        #     data.append(ih(i))
         # data.append('0'*0)
 
         self.memory.put_data(
@@ -86,43 +86,38 @@ class Pager(object):
         """
         return self.memory.get_byte((self.PLR, self.PLBR), offset)
 
-    def get_code_cell_address(self, virtual_address):
-        """ Apskaičiuoja realų ląstelės adresą pagal kodo segmento
-        virtualų adresą.
-        """
-
-        virtual_address = self.memory.get_address_int(virtual_address)
-        C = hex_to_int(self.get_byte(0) + self.get_byte(1))
-
-        min_address = 0
-        max_address = C * BLOCK_SIZE
-        if not (min_address <= virtual_address <= max_address):
-            raise ValueError('Virtualus adresas nepriklauso kodo segmentui.')
-        virtual_block, cell = self.memory.get_address_tuple(virtual_address)
-
-        block = hex_to_int(
-                self.get_byte(4 + 2 * virtual_block) +
-                self.get_byte(4 + 2 * virtual_block + 1))
-        return block, cell
+    # def get_code_cell_address(self, virtual_address):
+    #     """ Apskaičiuoja realų ląstelės adresą pagal kodo segmento
+    #     virtualų adresą.
+    #     """
+    #
+    #     virtual_address = self.memory.get_address_int(virtual_address)
+    #     C = hex_to_int(self.get_byte(0) + self.get_byte(1))
+    #
+    #     min_address = 0
+    #     max_address = C * BLOCK_SIZE
+    #     if not (min_address <= virtual_address <= max_address):
+    #         raise ValueError('Virtualus adresas nepriklauso kodo segmentui.')
+    #     virtual_block, cell = self.memory.get_address_tuple(virtual_address)
+    #
+    #     block = hex_to_int(
+    #             self.get_byte(4 + 2 * virtual_block) +
+    #             self.get_byte(4 + 2 * virtual_block + 1))
+    #     return block, cell
 
     def get_data_cell_address(self, virtual_address):
         """ Apskaičiuoja realų ląstelės adresą pagal duomenų segmento
         virtualų adresą.
         """
-
         virtual_address = self.memory.get_address_int(virtual_address)
-        C = hex_to_int(self.get_byte(0) + self.get_byte(1))
-        D = hex_to_int(self.get_byte(2) + self.get_byte(3))
+        D = 16
 
         min_address = 0
         max_address = D * BLOCK_SIZE
         if not (min_address <= virtual_address <= max_address):
             raise ValueError('Virtualus adresas nepriklauso duomenų segmentui.')
         virtual_block, cell = self.memory.get_address_tuple(virtual_address)
-
-        block = hex_to_int(
-                self.get_byte(4 + 2 * (C + virtual_block)) +
-                self.get_byte(4 + 2 * (C + virtual_block) + 1))
+        block = hex_to_int(self.get_byte(2 * (virtual_block)) + self.get_byte(2 * (virtual_block) + 1))
         return block, cell
 
 class RealMemory(object):
@@ -166,6 +161,7 @@ class RealMemory(object):
             # print('c', cell)
             # print('a', address)
         else:
+
             # print('add', address)
             block, cell = address
         return block, cell
@@ -185,6 +181,7 @@ class RealMemory(object):
         """
 
         block, cell = self.get_address_tuple(address)
+        # print(block, cell)
         return self._cells[block][cell]
 
     def __getitem__(self, address):
@@ -196,7 +193,7 @@ class RealMemory(object):
     def __setitem__(self, address, value):
         """ Priskiria adresu nurodytai ląstelei nurodytą reikšmę.
         """
-
+        # print(address, value)
         self._get_cell(address).value = value
 
     def put_data(self, address, data):
@@ -208,7 +205,6 @@ class RealMemory(object):
         """
 
         block, cell = self.get_address_tuple(address)
-
         # Apvalina iki žodžių.
         size = float(len(data))
         fill = int(
@@ -262,37 +258,28 @@ class RealMemory(object):
         word = self[address]
         self[address] = word[0:offset] + value + word[offset+1:]
 
-    def create_virtual_memory(self, code, code_size, data, data_size):
+    def create_virtual_memory(self, code, data, data_size):
         """ Išskiria virtualią atmintį ir į ją įkelia kodą bei duomenis.
         """
 
-        pager = Pager(self, C=code_size, D=data_size)
-
+        pager = Pager(self, D=data_size)
         # Įkeliamas kodo segmentas.
         vmdata = VirtualMemory(self, pager)
-        labels = {}
+
+        # print(vmdata)
         clean_code = []
         for i, line in enumerate(code):
-            if ':' in line:
-                label, command = line.split(':')
-                labels[label.strip()] = i
-            else:
-                command = line
+            command = line
             clean_code.append(command.strip())
 
         for i, command in enumerate(clean_code):
-            if '~' in command:
-                label = command.split('~', 1)[1].split('@', 1)[0]
-                command = command.replace(
-                        '~{0}@'.format(label),
-                        int_to_hex(labels[label], 3))
-            else:
-                command = command
+            command = command
             command += ' ' * (WORD_SIZE - len(command))
             vmdata[i] = command
+            # print(i)
 
-        # Įkeliamas duomenų segmentas.
-        vmdata = VirtualMemory(self, pager)
+        # # Įkeliamas duomenų segmentas.
+        # vmdata = VirtualMemory(self, pager)
 
         for block in data.keys():
             for word, line in enumerate(data[block]):
@@ -300,6 +287,9 @@ class RealMemory(object):
                 address = hex_to_int(hex_address)
                 line = line.replace('\n', '')
                 vmdata[address] = line
+            #     print(hex_address)
+            # print(block)
+
 
         return vmdata
 
@@ -332,4 +322,5 @@ class VirtualMemory(object):
         """
 
         # print(f's={self.pager.get_data_cell_address(address)}')
+        # print('address' , address, value)
         self.memory[self.pager.get_data_cell_address(address)] = value
