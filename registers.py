@@ -4,7 +4,7 @@
 emuliacijai.
 """
 
-WORD_SIZE = 8                           # Žodžio dydis yra 8 baitai.
+WORD_SIZE = 4                    # Žodžio dydis yra 8 baitai.
 
 def int_to_hex(number, size=None):
     """ Konvertuoja sveikąjį teigiamą skaičių ``number`` į simbolių eilutę

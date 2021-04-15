@@ -8,3 +8,4 @@ file = 'test_program_1_simple'
 rm = RealMachine()
 rm.load_virtual_machine(file)
 rm.processor.execute()
+

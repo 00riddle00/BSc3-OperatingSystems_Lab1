@@ -12,8 +12,9 @@ from registers import WORD_SIZE
 from registers import int_to_hex, hex_to_int
 from registers import Cell
 
-BLOCKS = 256
+BLOCKS = 96
 BLOCK_SIZE = 16
+# WORD_SIZE = 4
 PAGER_SIZE = 16
 
 def ih(number):
@@ -69,7 +70,7 @@ class Pager(object):
             data.append(ih(i))
         for i in range(PAGER_SIZE + C, PAGER_SIZE + C + D):
             data.append(ih(i))
-        data.append('0'*36)
+        # data.append('0'*0)
 
         self.memory.put_data(
                 self.PLR * BLOCK_SIZE + self.PLR, ''.join(data))
@@ -140,6 +141,12 @@ class RealMemory(object):
             for j in range(BLOCK_SIZE):
                 block.append(Cell())
             self._cells.append(block)
+            #        for i in range(BLOCKS):
+            # block = []
+            # for j in range(BLOCK_SIZE):
+            #     for k in range(WORD_SIZE):
+            #         block.append(Cell())
+            #     self._cells.append(block)
 
     def get_address_tuple(self, address):
         """ Grąžina bloko ir elemento bloke adresus.
@@ -262,7 +269,7 @@ class RealMemory(object):
         pager = Pager(self, C=code_size, D=data_size)
 
         # Įkeliamas kodo segmentas.
-        vmcode = VirtualMemoryCode(self, pager)
+        vmdata = VirtualMemory(self, pager)
         labels = {}
         clean_code = []
         for i, line in enumerate(code):
@@ -282,10 +289,10 @@ class RealMemory(object):
             else:
                 command = command
             command += ' ' * (WORD_SIZE - len(command))
-            vmcode[i] = command
+            vmdata[i] = command
 
         # Įkeliamas duomenų segmentas.
-        vmdata = VirtualMemoryData(self, pager)
+        vmdata = VirtualMemory(self, pager)
 
         for block in data.keys():
             for word, line in enumerate(data[block]):
@@ -294,34 +301,11 @@ class RealMemory(object):
                 line = line.replace('\n', '')
                 vmdata[address] = line
 
-        return vmcode, vmdata
+        return vmdata
 
-class VirtualMemoryCode(object):
-    """ Virtualios mašinos atmintis, kodo segmentas.
-    """
 
-    def __init__(self, memory, pager):
-        """
-        + ``memory`` – realios mašinos atmintis.
-        + ``pager`` – puslapiavimo mechanizmo objektas.
-        """
 
-        self.memory = memory
-        self.pager = pager
-
-    def __getitem__(self, address):
-        """ Grąžina adresu nurodytos kodo segmento ląstelės adresą.
-        """
-
-        return self.memory[self.pager.get_code_cell_address(address)]
-
-    def __setitem__(self, address, value):
-        """ Priskiria adresu nurodytai ląstelei nurodytą reikšmę.
-        """
-
-        self.memory[self.pager.get_code_cell_address(address)] = value
-
-class VirtualMemoryData(object):
+class VirtualMemory(object):
     """ Virtualios mašinos atmintis, duomenų segmentas.
     """
 

@@ -36,21 +36,21 @@ class Commands(object):
 
     @staticmethod
     def LR(proc, x):
-        proc.R = proc.virtual_memory_data[hex_to_int(x)]
+        proc.R = proc.virtual_memory[hex_to_int(x)]
 
     @staticmethod
     def LD(proc, x):
-        proc.D = proc.virtual_memory_data[hex_to_int(x)]
+        proc.D = proc.virtual_memory[hex_to_int(x)]
 
     @staticmethod
     def SR(proc, x):
-        proc.virtual_memory_data[hex_to_int(x)] = proc.R
+        proc.virtual_memory[hex_to_int(x)] = proc.R
 
     @staticmethod
     def PD(proc, x):
         r = int(proc.R)
         while(r > 0):
-            print(proc.virtual_memory_data[hex_to_int(x)])
+            print(proc.virtual_memory[hex_to_int(x)])
             r = r -1
             a = int(x)
             a = a + 1
@@ -59,7 +59,7 @@ class Commands(object):
     @staticmethod
     def GN(proc, x):
         valueEntered = proc.Read()
-        proc.virtual_memory_data[hex_to_int(x)] = valueEntered
+        proc.virtual_memory[hex_to_int(x)] = valueEntered
 
     # @staticmethod
     # def HALT(proc):
@@ -138,7 +138,7 @@ class Processor(object):
     CHST = HexRegister(1)               # Kanalų užimtumo registras.
 
     def __init__(self, real_memory,
-            virtual_memory_code=None, virtual_memory_data=None):
+            virtual_memory = None):
         """ Inicializuoja procesorių.
 
         + ``real_memory`` – realios mašinos atmintis.
@@ -149,24 +149,23 @@ class Processor(object):
         """
 
         self.real_memory = real_memory
-        self.virtual_memory_code = virtual_memory_code
-        self.virtual_memory_data = virtual_memory_data
+        self.virtual_memory = virtual_memory
         self.commands = Commands()
 
-    def set_virtual_memory(self, virtual_memory_code, virtual_memory_data):
+    def set_virtual_memory(self, virtual_memory):
         """ Nurodo naudoti ``virtual_memory``, kaip virtualios atminties
         objektą.
         """
 
-        self.virtual_memory_code = virtual_memory_code
-        self.virtual_memory_data = virtual_memory_data
+        self.virtual_memory = virtual_memory
+
 
     def step(self):
         """ Įvykdo vieną komandą.
 
         Grąžina ``True`` jei pavyko ir ``False`` kitu atveju.
         """
-        value = self.virtual_memory_code[self.IC]
+        value = self.virtual_memory[self.IC]
         debug(f'Žingsnis: {self.IC} {value}')
         # value = 'LR 00a"
         self.IC = self.IC + 1

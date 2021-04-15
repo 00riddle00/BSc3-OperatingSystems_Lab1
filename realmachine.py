@@ -60,15 +60,15 @@ class RealMachine(object):
                                 data[block_no].append(line)
                                 words_in_block += 1
 
-            self.virtual_memory_code, self.virtual_memory_data = \
+            self.virtual_memory = \
                     self.real_memory.create_virtual_memory(
                             code, code_size, data, data_size)
 
 
-            self.processor.PLR = self.virtual_memory_code.pager.PLR
-            self.processor.PLBR = self.virtual_memory_code.pager.PLBR
+            self.processor.PLR = self.virtual_memory.pager.PLR
+            self.processor.PLBR = self.virtual_memory.pager.PLBR
             self.processor.set_virtual_memory(
-                    self.virtual_memory_code, self.virtual_memory_data)
+                    self.virtual_memory)
             self.processor.IC = 0
             # TODO: Atidaryti išorinius failus.
         else:
